@@ -125,9 +125,14 @@ public class MIC1 implements Runnable {
             //BEGIN OF THE READ/WRITE MEMORY PROCESS.
             if (!mir.getInstruction().substring(29, 32).equals("000")) {
                 //delayed wr operation
-                if (mir.getInstruction().charAt(29) == '1')
+                if (mir.getInstruction().charAt(29) == '1') {
                     toWrite.enqueue(new toWriteData(new Binary32(dataPath.getMAR().getValue()),
                             new Binary32(dataPath.getMDR().getValue())));
+                    if (new Binary32(dataPath.getMAR().getValue()).getDecimal() == -3)//TODO Forse non è sempre -3
+                    {
+                        System.out.print((char)new Binary32(dataPath.getMDR().getValue()).getDecimal());
+                    }
+                }
                 //delayed rd operation
                 if (mir.getInstruction().charAt(30) == '1')
                     readed.enqueue(mem32.rd(dataPath.getMAR()));

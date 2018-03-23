@@ -71,8 +71,8 @@ public class DataPath {
                     break;
                 case 2:
                     if (_code.charAt(i) == '1') {
-                        if (TOS.getDecimal() == busC.getDecimal() && _code.equals("001000000"))
-                            System.out.print((char) TOS.getDecimal());
+                        /*if (TOS.getDecimal() == busC.getDecimal() && _code.equals("001000000"))
+                            System.out.print((char) TOS.getDecimal());*/
                         TOS = new Binary32(busC.getValue());
                     }
 
