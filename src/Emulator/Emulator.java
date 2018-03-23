@@ -73,6 +73,10 @@ public class Emulator {
         theGUI.setVisible(true);
     }
 
+    public GUI getTheGUI() {
+        return theGUI;
+    }
+
     //chiamato dall'emumic quando la computazione è completa
     public void complete() {
         int coefficienteStress = theMachine.getSP() - theMachine.getLV();
@@ -148,6 +152,7 @@ public class Emulator {
                 theMachine.writeConstants(theAssembler.getConstants());
                 theGUI.setMethodArea("Addr   | Content\n" + theMachine.getMethodArea(false));
                 theGUI.setConstantPool(theMachine.getConstantPool());
+                theGUI.setStdout("");
                 theGUI.setOutput("Translation successfully completed!");
                 theMachine.setMainLastByte(theAssembler.getMainLastByte());
                 theMachine.reset();
@@ -196,6 +201,7 @@ public class Emulator {
             theGUI.setReset(false);
             theGUI.setStep(true);
             step = false;
+            theGUI.setStdout("");
         }
     }
 
@@ -284,6 +290,7 @@ public class Emulator {
                     theGUI.setConstantPool("");
                     theGUI.setOutput("");
                     theGUI.setProgram("");
+                    theGUI.setStdout("");
                     theGUI.setStep(false);
                     theGUI.setStop(false);
                     theGUI.setStart(false);

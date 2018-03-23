@@ -130,6 +130,7 @@ public class MIC1 implements Runnable {
                             new Binary32(dataPath.getMDR().getValue())));
                     if (new Binary32(dataPath.getMAR().getValue()).getDecimal() == -3)//TODO Forse non è sempre -3
                     {
+                        toAdvise.getTheGUI().appendStdout("" + (char) new Binary32(dataPath.getMDR().getValue()).getDecimal());
                         System.out.print((char) new Binary32(dataPath.getMDR().getValue()).getDecimal());
                     }
                 }
