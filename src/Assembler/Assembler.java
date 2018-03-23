@@ -5,22 +5,17 @@
 */
 package Assembler;
 
-import Numbers.*;
-import ADT.ListDL.*;
+import ADT.ListDL.ListDL;
+import Emulator.SystemError;
+import Numbers.Binary32;
+import Numbers.Binary8;
 
-import java.io.Serializable;
-import java.io.FileInputStream;
-import java.io.ObjectInputStream;
-import java.io.EOFException;
-import java.io.IOException;
-import java.io.FileOutputStream;
-import java.io.ObjectOutputStream;
+import java.io.*;
 import java.math.BigInteger;
 
-import Emulator.SystemError;
-
-public class Assembler
-{
+public class Assembler {
+    //l'ultimo byte del metodo main, serve per fermare la computazione
+    int mainLastByte = 0;
     //conterrà le istruzioni tradotte
     private ListDL decoded;
     //contiene tutti gli opcode riconosciuti dall'assemblatore
@@ -31,48 +26,43 @@ public class Assembler
     private ListDL signsTable;
     //il modulo del programma, contiene un insieme di liste di istruzioni, una per ogni metodo
     private ListDL programModule;
-    //l'ultimo byte del metodo main, serve per fermare la computazione
-    int mainLastByte = 0;
 
     //il costruttore inizializza semplicemente tutti i campi
-    public Assembler()
-    {
+    public Assembler() {
         referencesTable = new ListDL();
 
         //carico gli opcode dal file opcode
-        try
-        {
+        try {
             ObjectInputStream input = new ObjectInputStream(new FileInputStream("./Assembler/opcode.lst"));
             while (true)
                 referencesTable.insertTail(input.readObject());
-        } catch (EOFException e)
-        {
-        } catch (IOException e)
-        {
+        } catch (EOFException e) {
+        } catch (IOException e) {
             throw new SystemError("I/O error, the file Assembler/opcode.lst may be corrupt\n" + e);
-        } catch (ClassNotFoundException e)
-        {
+        } catch (ClassNotFoundException e) {
             throw new SystemError("The file Assembler/opcode.lst is corrupt");
         }
 
     }
 
+    public static void main(String[] args) {
+
+        short ciao = 5000;
+
+    }
+
     //traduce una sequenza di istruzioni
-    public void translate(String[] _toTranslate)
-    {
+    public void translate(String[] _toTranslate) {
         if (_toTranslate.length == 0)
             throw new TranslationError("Program not found!");
         //rimuove i commenti e le istruzioni vuote
-        for (int i = 0; i < _toTranslate.length; i++)
-        {
+        for (int i = 0; i < _toTranslate.length; i++) {
             if (_toTranslate[i].contains("//"))
                 _toTranslate[i] = _toTranslate[i].substring(0, _toTranslate[i].indexOf("/"));
-            if (_toTranslate[i].replaceAll(" ", "").replaceAll("\t", "").length() == 0)
-            {
+            if (_toTranslate[i].replaceAll(" ", "").replaceAll("\t", "").length() == 0) {
                 String[] toTrN = new String[_toTranslate.length - 1];
                 for (int j = 0, k = 0; j < _toTranslate.length; j++)
-                    if (j != i)
-                    {
+                    if (j != i) {
                         System.out.println(_toTranslate[j] + j);
                         toTrN[k++] = _toTranslate[j];
                     }
@@ -89,20 +79,16 @@ public class Assembler
         //secondo le specifiche Tanmbaumniane
         constantsTable.insertTail(new Constant("objref", 0));
         //pulisco tutte le righe di istruzioni dagli spazi in eccesso
-        for (int i = 0; i < _toTranslate.length; i++)
-        {
+        for (int i = 0; i < _toTranslate.length; i++) {
             _toTranslate[i] = _toTranslate[i].replaceAll(" +", " ");
             _toTranslate[i] = _toTranslate[i].replaceAll("\t", " ");
         }
         //cerco le costanti
-        if (_toTranslate[0].contains(".constant"))
-        {
-            if (_toTranslate[0].replace(" ", "").equals(".constant"))
-            {
+        if (_toTranslate[0].contains(".constant")) {
+            if (_toTranslate[0].replace(" ", "").equals(".constant")) {
                 _toTranslate[0] = null;
                 int j = 1;
-                while (!_toTranslate[j].contains(".end-constant"))
-                {
+                while (!_toTranslate[j].contains(".end-constant")) {
                     String[] constant = _toTranslate[j].split(" ");
                     if (constant.length != 2)
                         throw new TranslationError("Malformed constant declaration: \n"
@@ -114,11 +100,9 @@ public class Assembler
                     int value = 0;
                     if (nameP.length() != 0)
                         throw new TranslationError("Constant's name not permitted: \n" + name + "\non line: " + (j + 1));
-                    try
-                    {
+                    try {
                         value = Integer.parseInt(constant[1]);
-                    } catch (NumberFormatException e)
-                    {
+                    } catch (NumberFormatException e) {
                         throw new TranslationError(constant[1] + " is NaN on line: " + (j + 1));
                     }
                     constantsTable.insertTail(new Constant(name, value));
@@ -136,10 +120,8 @@ public class Assembler
         String[] main = new String[2];
         boolean mainF = false;
         int mainInit = 0;
-        for (int i = 0; i < _toTranslate.length; i++)
-        {
-            if (_toTranslate[i] != null && _toTranslate[i].equals(".main"))
-            {
+        for (int i = 0; i < _toTranslate.length; i++) {
+            if (_toTranslate[i] != null && _toTranslate[i].equals(".main")) {
                 _toTranslate[i] = ".method main()";
                 if (mainF)
                     throw new TranslationError("main method already defined \non line " + (i + 1));
@@ -148,8 +130,7 @@ public class Assembler
                 //costruisco la firma del metodo
                 //main[0] = _toTranslate[i];
                 int index = 0;
-                while (!_toTranslate[i].contains(".end-main"))
-                {
+                while (!_toTranslate[i].contains(".end-main")) {
                     //inserisco nell'array del main la nuova riga di codice
                     main[index++] = _toTranslate[i];
                     i++;
@@ -159,8 +140,7 @@ public class Assembler
                         if (!_toTranslate[i].equals(".var") && !_toTranslate[i].equals(".end-main") &&
                                 !_toTranslate[i].equals(".end-var"))
                             throw new TranslationError("Unexpected: " + _toTranslate[i] + " in method main");
-                    if (index >= main.length)
-                    {
+                    if (index >= main.length) {
                         String[] mainN = new String[main.length + 1];
                         for (int k = 0; k < main.length; k++)
                             mainN[k] = main[k];
@@ -188,20 +168,15 @@ public class Assembler
         System.out.println(mainLastByte);
         int methodInit = 0;
         //cerco e divido gli altri metodi
-        for (int i = 0; i < _toTranslate.length; i++)
-        {
-            if (_toTranslate[i] != null)
-            {
+        for (int i = 0; i < _toTranslate.length; i++) {
+            if (_toTranslate[i] != null) {
                 String[] nowMethod = new String[2];
-                if (_toTranslate[i].contains(".method"))
-                {
+                if (_toTranslate[i].contains(".method")) {
                     int index = 0;
                     methodInit = i + 1;
-                    while (!_toTranslate[i].contains(".end-method"))
-                    {
+                    while (!_toTranslate[i].contains(".end-method")) {
                         nowMethod[index++] = _toTranslate[i++];
-                        if (index >= nowMethod.length)
-                        {
+                        if (index >= nowMethod.length) {
                             String[] nowMethodN = new String[nowMethod.length + 1];
                             for (int j = 0; j < nowMethod.length; j++)
                                 nowMethodN[j] = nowMethod[j];
@@ -228,14 +203,12 @@ public class Assembler
     }
 
     //effettua il primo step di un metodo
-    public Method firstStep(String[] _instrunctions, int methodInit)
-    {
+    public Method firstStep(String[] _instrunctions, int methodInit) {
         //controllo la dichiarazione del metodo
         String direttiva = _instrunctions[0];
         String nomeMetodo = "";
         String[] parameters = new String[0];
-        if (direttiva.substring(0, 8).equals(".method "))
-        {
+        if (direttiva.substring(0, 8).equals(".method ")) {
 	    /*
 	      DECODIFICA DELLA FIRMA DEL METODO
 	    */
@@ -255,8 +228,7 @@ public class Assembler
             String parametri = direttiva.substring(direttiva.indexOf('('));
             //controllo che la stringa sia ben parentizzata
             parametri = purge(parametri);
-            if (parametri.charAt(parametri.length() - 1) == ')')
-            {
+            if (parametri.charAt(parametri.length() - 1) == ')') {
                 parametri = (parametri.substring(1, parametri.length() - 1));
                 String[] parametriArr;
                 if (parametri.length() == 0)
@@ -264,8 +236,7 @@ public class Assembler
                 else
                     parametriArr = parametri.split(",");
                 parameters = new String[parametriArr.length];
-                for (int i = 0; i < parametriArr.length; i++)
-                {
+                for (int i = 0; i < parametriArr.length; i++) {
                     //elimino gli spazi iniziali e finali
                     parametriArr[i] = purge(parametriArr[i]);
                     //controllo che i nomi dei parametri contengano solo lettere numeri o underscore
@@ -293,18 +264,15 @@ public class Assembler
         String direttivaVar = _instrunctions[1];
         int endVarIndex = 1;
         ListDL localVars = new ListDL();
-        if (direttivaVar.contains(".var"))
-        {
+        if (direttivaVar.contains(".var")) {
             //controllo che la direttiva trovata sia corretta
             if (!direttivaVar.replace(" ", "").equals(".var"))
                 throw new TranslationError("Unknown instrution:\n" + direttiva +
                         "\nmethod: " + nomeMetodo + "\non line: " + (methodInit + 1));
             //esamino tutte le variabili finchè non trovo .end-var
             int i = 2;
-            try
-            {
-                while (!_instrunctions[i].contains(".end-var"))
-                {
+            try {
+                while (!_instrunctions[i].contains(".end-var")) {
                     //elimino spazi iniziali e spazi finali
                     _instrunctions[i] = purge(_instrunctions[i]);
                     //controllo che la variabile abbia un nome corretto
@@ -329,8 +297,7 @@ public class Assembler
                     localVars.insertTail(_instrunctions[i]);
                     endVarIndex = i++;
                 }
-            } catch (IndexOutOfBoundsException e)
-            {
+            } catch (IndexOutOfBoundsException e) {
                 throw new TranslationError(".end-var expected in method " + nomeMetodo);
             }
             if (!_instrunctions[++endVarIndex].replace(" ", "").equals(".end-var"))
@@ -353,17 +320,14 @@ public class Assembler
         int i = endVarIndex + 1;
         int lastByte = 4;
         //calcolo tutti gli indirizzi del metodo
-        try
-        {
-            while (!_instrunctions[i].contains(".end-method"))
-            {
+        try {
+            while (!_instrunctions[i].contains(".end-method")) {
                 _instrunctions[i] = purge(_instrunctions[i]);
                 if (_instrunctions[i].contains(".var"))
                     throw new TranslationError("Unexpected .var \n" +
                             "method: " + nomeMetodo + "\non line: " + (methodInit + i));
                 //controllo la presenza di un etichetta
-                if (_instrunctions[i].contains(":"))
-                {
+                if (_instrunctions[i].contains(":")) {
                     String label = _instrunctions[i].split(":")[0];
                     //elimino gli spazi iniziali e finali
                     label = purge(label);
@@ -389,15 +353,13 @@ public class Assembler
                 String[] opcodeLine = _instrunctions[i].split(" ");
                 String opcodeName = opcodeLine[0];
                 Opcode now = getOpcode(opcodeName);
-                if (now == null)
-                {
+                if (now == null) {
                     //provo a cercare l'opcode formato da due parole
                     if (opcodeLine.length == 1)
                         throw new TranslationError("Opcode not found:\n" + opcodeName +
                                 "\nmethod: " + nomeMetodo +
                                 "\non line: " + (methodInit + i));
-                    else
-                    {
+                    else {
                         purge(opcodeName);
                         String opcodeNS = opcodeLine[1];
                         now = getOpcode(opcodeName + " " + opcodeNS);
@@ -420,31 +382,25 @@ public class Assembler
                             "method: " + theMethod.getName() + "\non line " + (methodInit + i));
                 ListDL parametersInstr = new ListDL();
                 //giro tutti gli operandi alla ricerca di simboli da inserire nella tabella dei simboli
-                for (int j = 0; j < now.getParametersNumber(); j++)
-                {
+                for (int j = 0; j < now.getParametersNumber(); j++) {
                     Parametro nowP = now.getParametro(j);
                     ListDL simboli = theMethod.getSimboli();
                     boolean isHex = false;
-                    switch (nowP.getTipo())
-                    {
+                    switch (nowP.getTipo()) {
 
                         //caso parametro diretto
                         case 0:
-                            try
-                            {
+                            try {
                                 String param = opcodeLine[j + (now.isLarge() ? 2 : 1)];
-                                if(param.startsWith("0x"))
-                                {
+                                if (param.startsWith("0x")) {
                                     String hex = param.split("0x")[1];
                                     BigInteger bi = new BigInteger(hex, 16);
                                     isHex = true;
-                                }
-                                else {
+                                } else {
                                     Integer.parseInt(param);
                                     isHex = false;
                                 }
-                            } catch (NumberFormatException e)
-                            {
+                            } catch (NumberFormatException e) {
                                 throw new TranslationError(opcodeLine[j + (now.isLarge() ? 2 : 1)] +
                                         " is NaN\nmethod: " + nomeMetodo + "+\non line: " + (methodInit + i));
                             }
@@ -476,7 +432,7 @@ public class Assembler
                             //-1 sta per non risolto
                             break;
                     }
-                    if(isHex) {
+                    if (isHex) {
                         String hex = (opcodeLine[j + (now.isLarge() ? 2 : 1)]).split("0x")[1];
                         BigInteger bi = new BigInteger(hex, 16);
                         parametersInstr.insertTail(bi.toString());
@@ -489,17 +445,14 @@ public class Assembler
                 lastByte += length;
                 i++;
             }
-        } catch (IndexOutOfBoundsException e)
-        {
+        } catch (IndexOutOfBoundsException e) {
             throw new TranslationError(".end-method expected in method " + nomeMetodo);
         }
         return theMethod;
     }//fine del primo passo
 
-
     //elimina gli spazi iniziali e finali dalla string in input
-    public String purge(String _toPurge)
-    {
+    public String purge(String _toPurge) {
         int j = 0;
         if (_toPurge.length() == 0)
             return "";
@@ -511,8 +464,7 @@ public class Assembler
         return _toPurge;
     }
 
-    public void secondStep(Method _toDecode, int methodInit)
-    {
+    public void secondStep(Method _toDecode, int methodInit) {
         ListDL instrunctions = _toDecode.getInstrunctions();
         instrunctions.rewind();
         //estraggo la firma del metodo
@@ -526,8 +478,7 @@ public class Assembler
                         parametersArr[1], parametersArr[0], variableArr[1], variableArr[0]
                 };
         _toDecode.setFirst4Bytes(first4Bytes);
-        while (instrunctions.hasNext())
-        {
+        while (instrunctions.hasNext()) {
             FirstStepInstr now = (FirstStepInstr) instrunctions.next();
             Opcode nowOp = now.getOpcode();
             int opcodeVal = nowOp.getValue();
@@ -548,15 +499,12 @@ public class Assembler
             int[] positions = new int[1];
             int[] unSBytes = new int[1];
             int index = 0;
-            for (int i = 0; i < nowOp.getParametersNumber(); i++)
-            {
+            for (int i = 0; i < nowOp.getParametersNumber(); i++) {
 
                 String parameterName = (String) parameters.next();
                 int bytes = nowOp.getParametro(i).getBytes();
-                if (nowOp.getParametro(i).getTipo() != 1)
-                {
-                    switch (nowOp.getParametro(i).getTipo())
-                    {
+                if (nowOp.getParametro(i).getTipo() != 1) {
+                    switch (nowOp.getParametro(i).getTipo()) {
                         case 0:
                             //controllo il valore passato e successivamente lo traduco in binario
                             int maxValue = (int) Math.pow(2, (bytes * 8) - 1) - 1;
@@ -574,8 +522,7 @@ public class Assembler
                             //elaboro tutti i simboli
                             sygns.rewind();
                             int symbolValue = -1;
-                            while (sygns.hasNext())
-                            {
+                            while (sygns.hasNext()) {
                                 Simbolo nowS = (Simbolo) sygns.next();
                                 if (nowS.getName().equals(parameterName))
                                     symbolValue = nowS.getOffset();
@@ -593,11 +540,9 @@ public class Assembler
                             ListDL labels = _toDecode.getLabels();
                             labels.rewind();
                             boolean trovato = false;
-                            while (labels.hasNext())
-                            {
+                            while (labels.hasNext()) {
                                 Label nowL = (Label) labels.next();
-                                if (nowL.getName().equals(parameterName))
-                                {
+                                if (nowL.getName().equals(parameterName)) {
                                     trovato = true;
                                     int offset = nowL.getByte() - now.getFirstByte();
                                     maxValue = (int) Math.pow(2, (bytes * 8) - 1) - 1;
@@ -619,16 +564,13 @@ public class Assembler
                     }
                 }
                 //il caso della costante non è risolvibile in questo momento
-                else
-                {
+                else {
                     solved = false;
-                    if (index >= toSolve.length)
-                    {
+                    if (index >= toSolve.length) {
                         String[] toSolveN = new String[toSolve.length + 1];
                         int[] positionsN = new int[toSolve.length + 1];
                         int[] unSBytesN = new int[unSBytes.length + 1];
-                        for (int j = 0; j < toSolve.length; j++)
-                        {
+                        for (int j = 0; j < toSolve.length; j++) {
                             toSolveN[j] = toSolve[j];
                             positionsN[j] = positions[j];
                             unSBytesN[j] = unSBytes[j];
@@ -643,8 +585,7 @@ public class Assembler
                 }
             }
             SecondStepInstr toInsertInstr = new SecondStepInstr();
-            if (!solved)
-            {
+            if (!solved) {
                 toInsertInstr.setSolved(false);
                 toInsertInstr.setNotSolved(toSolve);
                 toInsertInstr.setPositions(positions);
@@ -662,12 +603,10 @@ public class Assembler
         finalInstructions.rewind();
         System.out.println("\nInstrunctions:");
         System.out.println("Solved - Instrunction");
-        while (finalInstructions.hasNext())
-        {
+        while (finalInstructions.hasNext()) {
             SecondStepInstr now = (SecondStepInstr) finalInstructions.next();
             System.out.printf("%6.1s -%s\n", now.isSolved(), now.getBinIstr());
-            if (!now.isSolved())
-            {
+            if (!now.isSolved()) {
                 String[] toSolve = now.getUnsolved();
                 int[] positions = now.getUnsolvedPositions();
                 int[] unsolvedBytes = now.getUnsolvedBytes();
@@ -682,22 +621,18 @@ public class Assembler
         programModule.insertTail(_toDecode);
     }
 
-
     //effettua il linkaggio di tutti i metodi
-    public void linkage()
-    {
+    public void linkage() {
         programModule.rewind();
         decoded.rewind();
         //effettuo il calcolo dei primi byte dei metodi
         int now = 3;
         //controllo che tutte le costanti siano uniche
         constantsTable.rewind();
-        while (constantsTable.hasNext())
-        {
+        while (constantsTable.hasNext()) {
             Constant nowC = (Constant) constantsTable.next();
             constantsTable.saveNow();
-            while (constantsTable.hasNext())
-            {
+            while (constantsTable.hasNext()) {
                 Constant succ = (Constant) constantsTable.next();
                 if (nowC.getName().equals(succ.getName()))
                     throw new TranslationError("Constant " + nowC.getName() + " already defined ");
@@ -705,16 +640,13 @@ public class Assembler
             constantsTable.restoreNow();
         }
 
-        while (programModule.hasNext())
-        {
+        while (programModule.hasNext()) {
             Method nowM = (Method) programModule.next();
             //aggiorno la costante
             constantsTable.rewind();
-            while (constantsTable.hasNext())
-            {
+            while (constantsTable.hasNext()) {
                 Constant nowC = (Constant) constantsTable.next();
-                if (nowC.getName().equals(nowM.getName()))
-                {
+                if (nowC.getName().equals(nowM.getName())) {
                     //la method area di ijvm, almeno per la mia implementazione comincia da 2^18
                     nowC.setValue(now + ((int) Math.pow(2, 16) * 4));
                 }
@@ -724,35 +656,29 @@ public class Assembler
         //risolvo tutte le istruzioni non risolte presenti nei metodi
         programModule.rewind();
         System.out.println("----Solving all remaining instrunctions----");
-        while (programModule.hasNext())
-        {
+        while (programModule.hasNext()) {
             Method nowM = (Method) programModule.next();
             //aggiorno la costante
             constantsTable.rewind();
             ListDL secondStep = nowM.getInstrunctionsSeconds();
             secondStep.rewind();
-            while (secondStep.hasNext())
-            {
+            while (secondStep.hasNext()) {
                 //controllo che l'istruzione sia risolta
                 SecondStepInstr nowStep = (SecondStepInstr) secondStep.next();
-                if (!nowStep.isSolved())
-                {
+                if (!nowStep.isSolved()) {
                     //estraggo gli argomenti non risolti
                     String[] notSolved = nowStep.getUnsolved();
                     int[] positions = nowStep.getUnsolvedPositions();
                     int[] bytes = nowStep.getUnsolvedBytes();
                     BinIstr nowBin = nowStep.getBinIstr();
-                    for (int i = 0; i < notSolved.length; i++)
-                    {
+                    for (int i = 0; i < notSolved.length; i++) {
                         //cerco tra le costanti
                         constantsTable.rewind();
                         boolean trovato = false;
                         int index = 0;
-                        while (constantsTable.hasNext())
-                        {
+                        while (constantsTable.hasNext()) {
                             Constant nowC = (Constant) constantsTable.next();
-                            if (nowC.getName().equals(notSolved[i]))
-                            {
+                            if (nowC.getName().equals(notSolved[i])) {
                                 trovato = true;
                                 break;
                             }
@@ -771,16 +697,14 @@ public class Assembler
         System.out.println("---Final object code---");
         //scrivo in decoded le istruzioni in linguaggio macchina trovate
         programModule.rewind();
-        while (programModule.hasNext())
-        {
+        while (programModule.hasNext()) {
             Method nowM = (Method) programModule.next();
             Binary8[] head = nowM.getFirst4Bytes();
             for (int i = 0; i < head.length; i++)
                 decoded.insertTail(head[i]);
             ListDL secondStep = nowM.getInstrunctionsSeconds();
             secondStep.rewind();
-            while (secondStep.hasNext())
-            {
+            while (secondStep.hasNext()) {
                 SecondStepInstr nowS = (SecondStepInstr) secondStep.next();
                 ListDL nowBin = nowS.getBinIstr().getBytes();
                 nowBin.rewind();
@@ -795,8 +719,7 @@ public class Assembler
     }
 
     //restituisce true se e solo se il method passata come parametro è presente nella lista dei metodi
-    public boolean exist(Method _toSearch)
-    {
+    public boolean exist(Method _toSearch) {
         programModule.rewind();
         while (programModule.hasNext())
             if (((Method) programModule.next()).equals(_toSearch))
@@ -805,22 +728,18 @@ public class Assembler
     }
 
     //restituisce un array di stringhe da otto caratteri
-    public Binary8[] toBytes(int toConvert, int totBytes)
-    {
+    public Binary8[] toBytes(int toConvert, int totBytes) {
         Binary32 converted = new Binary32(toConvert);
         Binary8[] toReturn = new Binary8[totBytes];
         //il totale dei bit è 32
-        for (int i = toReturn.length - 1; i >= 0; i--)
-        {
+        for (int i = toReturn.length - 1; i >= 0; i--) {
             toReturn[i] = converted.getByte(3 - i);
         }
         return toReturn;
     }
 
-
     //restitusce la lunghezza dell'opcode
-    private int calculateLength(Opcode _toCalc)
-    {
+    private int calculateLength(Opcode _toCalc) {
         int length = 1;
         if (_toCalc.isLarge())
             length = 2;
@@ -830,13 +749,10 @@ public class Assembler
         return length;
     }
 
-
     //restituisce l'opcode desiderato, null in caso di opcode non trovato
-    public Opcode getOpcode(String name)
-    {
+    public Opcode getOpcode(String name) {
         referencesTable.rewind();
-        while (referencesTable.hasNext())
-        {
+        while (referencesTable.hasNext()) {
             Opcode now = (Opcode) referencesTable.next();
             if (now.getOpcode().equals(name))
                 return now;
@@ -846,12 +762,10 @@ public class Assembler
 
     //questo metodo permette di inserire in tableReference un nuovo OPCODE con il corrispondente valore esadecimale e
     //numero di parametri
-    public Opcode insertOPCODE(String opcode, int value, int parameters)
-    {
+    public Opcode insertOPCODE(String opcode, int value, int parameters) {
         //scorro tutta la lista alla ricerca di opcode e/o value
         referencesTable.rewind();
-        while (referencesTable.hasNext())
-        {
+        while (referencesTable.hasNext()) {
             Opcode now = (Opcode) referencesTable.next();
             if (now.getOpcode().equals(opcode))
                 throw new InsertException("Opcode: " + opcode + " already exist");
@@ -864,11 +778,9 @@ public class Assembler
         return toReturn;
     }
 
-    public void setOpcode(Opcode toSet)
-    {
+    public void setOpcode(Opcode toSet) {
         referencesTable.rewind();
-        while (referencesTable.hasNext())
-        {
+        while (referencesTable.hasNext()) {
             Opcode now = (Opcode) referencesTable.next();
             if (now.equals(toSet))
                 referencesTable.setNow(toSet);
@@ -876,19 +788,15 @@ public class Assembler
         }
     }
 
-
     //restituisce una lista contentente le istruzioni tradotte suddivise in parole da 4 byte
-    public ListDL getDecoded()
-    {
+    public ListDL getDecoded() {
         ListDL toReturn = new ListDL();
         //la prima istruzione che deve eseguire la macchina sarà INVOKEVIRTUAL main
         constantsTable.rewind();
         int index = 0;
-        while (constantsTable.hasNext())
-        {
+        while (constantsTable.hasNext()) {
             Constant now = (Constant) constantsTable.next();
-            if (now.getName().equals("main"))
-            {
+            if (now.getName().equals("main")) {
                 Binary8[] mainAddr = toBytes(index, 2);
                 for (int i = 0; i < mainAddr.length; i++)
                     decoded.insertHead(mainAddr[i]);
@@ -899,11 +807,9 @@ public class Assembler
         boolean[] invokeB = {true, false, true, true, false, true, true, false};
         decoded.insertHead(new Binary8(invokeB));
         decoded.rewind();
-        while (decoded.hasNext())
-        {
+        while (decoded.hasNext()) {
             boolean[] bin32 = new boolean[32];
-            for (int i = 0; i < 4 && decoded.hasNext(); i++)
-            {
+            for (int i = 0; i < 4 && decoded.hasNext(); i++) {
                 boolean[] bin8 = ((Binary8) decoded.next()).getValue();
                 for (int j = 0; j < bin8.length; j++)
                     bin32[(i * 8) + j] = bin8[j];
@@ -914,41 +820,28 @@ public class Assembler
     }
 
     //restituisce la tabella delle costanti
-    public ListDL getConstants()
-    {
+    public ListDL getConstants() {
         return constantsTable;
     }
 
-    public int getMainLastByte()
-    {
+    public int getMainLastByte() {
         return mainLastByte;
     }
 
-    public void saveOpcodeList()
-    {
-        try
-        {
+    public void saveOpcodeList() {
+        try {
             ObjectOutputStream output = new ObjectOutputStream(new FileOutputStream("./Assembler/opcode.lst"));
             referencesTable.rewind();
             while (referencesTable.hasNext())
                 output.writeObject(referencesTable.next());
             output.close();
-        } catch (IOException e)
-        {
+        } catch (IOException e) {
             throw new SystemError("I/O error, the file may be corrupt");
         }
     }
 
-    public void setOpcodeList(Opcode[] toSet)
-    {
-        referencesTable = new ListDL();
-        for (int i = 0; i < toSet.length; i++)
-            referencesTable.insertTail(toSet[i]);
-    }
-
     //restituisce un array contenente gli opcode riconosciuti
-    public Opcode[] getOpcodeList()
-    {
+    public Opcode[] getOpcodeList() {
         Opcode[] toReturn = new Opcode[referencesTable.getSize()];
         referencesTable.rewind();
         int i = 0;
@@ -957,128 +850,106 @@ public class Assembler
         return toReturn;
     }
 
-
-    public static void main(String[] args)
-    {
-
-        short ciao = 5000;
-
+    public void setOpcodeList(Opcode[] toSet) {
+        referencesTable = new ListDL();
+        for (int i = 0; i < toSet.length; i++)
+            referencesTable.insertTail(toSet[i]);
     }
 
 }
 
 //il risultato del primo step
-class FirstStepInstr
-{
+class FirstStepInstr {
     private int firstByte;
     private int length;
     private Opcode opcode;
     private ListDL parameters;
 
-    public FirstStepInstr(int _firstByte, int _length, Opcode _opcode, ListDL _parameters)
-    {
+    public FirstStepInstr(int _firstByte, int _length, Opcode _opcode, ListDL _parameters) {
         firstByte = _firstByte;
         length = _length;
         opcode = _opcode;
         parameters = _parameters;
     }
 
-    public int getFirstByte()
-    {
+    public int getFirstByte() {
         return firstByte;
     }
 
-    public int getLength()
-    {
+    public int getLength() {
         return length;
     }
 
-    public int getNextByte()
-    {
+    public int getNextByte() {
         return firstByte + length;
     }
 
-    public Opcode getOpcode()
-    {
+    public Opcode getOpcode() {
         return opcode;
     }
 
-    public void insertParameter(String parameterName)
-    {
+    public void insertParameter(String parameterName) {
         parameters.insertTail(parameterName);
     }
 
-    public ListDL getParameters()
-    {
+    public ListDL getParameters() {
         return parameters;
     }
 }
 
 //il risultato del secondo step
-class SecondStepInstr
-{
+class SecondStepInstr {
     private boolean solved;
     private BinIstr instrunction;
     private String[] notSolved;
     private int[] positions;
     private int[] bytes;
 
-    public void setNotSolved(String[] _notSolved)
-    {
+    public void setNotSolved(String[] _notSolved) {
         notSolved = _notSolved;
     }
 
-    public void setPositions(int[] _positions)
-    {
+    public void setPositions(int[] _positions) {
         positions = _positions;
     }
 
-    public void setSolved(boolean _solved)
-    {
-        solved = _solved;
-    }
-
-    public void setUnsolvedBytes(int[] unsBytes)
-    {
-        bytes = unsBytes;
-    }
-
-    public void setBinInstr(BinIstr _binInstr)
-    {
+    public void setBinInstr(BinIstr _binInstr) {
         instrunction = _binInstr;
     }
 
-    public boolean isSolved()
-    {
+    public boolean isSolved() {
         return solved;
     }
 
-    public BinIstr getBinIstr()
-    {
+    public void setSolved(boolean _solved) {
+        solved = _solved;
+    }
+
+    public BinIstr getBinIstr() {
         return instrunction;
     }
 
-    public String[] getUnsolved()
-    {
+    public String[] getUnsolved() {
         return notSolved;
     }
 
-    public int[] getUnsolvedPositions()
-    {
+    public int[] getUnsolvedPositions() {
         return positions;
     }
 
-    public int[] getUnsolvedBytes()
-    {
+    public int[] getUnsolvedBytes() {
         return bytes;
+    }
+
+    public void setUnsolvedBytes(int[] unsBytes) {
+        bytes = unsBytes;
     }
 
 
 }
 
 
-class Method
-{
+class Method {
     private String name;
     private int parameters;
     private int localVars;
@@ -1092,8 +963,7 @@ class Method
     private ListDL binIstr;
     private int size;
 
-    public Method(String _name, int _parameters, int _localVars, int _firstByte)
-    {
+    public Method(String _name, int _parameters, int _localVars, int _firstByte) {
         name = _name;
         parameters = _parameters;
         localVars = _localVars;
@@ -1106,100 +976,81 @@ class Method
         size = 4;
     }
 
-    public String getName()
-    {
+    public String getName() {
         return name;
     }
 
-    public int getParameters()
-    {
+    public int getParameters() {
         return parameters;
     }
 
-    public int getLocalVars()
-    {
+    public int getLocalVars() {
         return localVars;
     }
 
-    public ListDL getInstrunctions()
-    {
+    public ListDL getInstrunctions() {
         return instrunctions;
     }
 
-    public ListDL getInstrunctionsSeconds()
-    {
+    public ListDL getInstrunctionsSeconds() {
         return instrunctionsSecond;
     }
 
-    public ListDL getSimboli()
-    {
+    public ListDL getSimboli() {
         return simboli;
     }
 
-    public ListDL getLabels()
-    {
+    public ListDL getLabels() {
         return labels;
     }
 
-    public void setFirst4Bytes(Binary8[] bytes)
-    {
-        first4Bytes = bytes;
-    }
-
-    public Binary8[] getFirst4Bytes()
-    {
+    public Binary8[] getFirst4Bytes() {
         return first4Bytes;
     }
 
-    public void insertSimbolo(Simbolo simbolo)
-    {
+    public void setFirst4Bytes(Binary8[] bytes) {
+        first4Bytes = bytes;
+    }
+
+    public void insertSimbolo(Simbolo simbolo) {
         simboli.insertTail(simbolo);
     }
 
-    public void insertInstruction(FirstStepInstr instrunction)
-    {
+    public void insertInstruction(FirstStepInstr instrunction) {
         instrunctions.insertTail(instrunction);
         size += instrunction.getLength();
     }
 
-    public void insertInstruction(SecondStepInstr instrunction)
-    {
+    public void insertInstruction(SecondStepInstr instrunction) {
         instrunctionsSecond.insertTail(instrunction);
     }
 
-    public void insertLabel(Label toInsert)
-    {
+    public void insertLabel(Label toInsert) {
         labels.insertTail(toInsert);
     }
 
-    public boolean equals(Method toCompare)
-    {
+    public boolean equals(Method toCompare) {
         return name.equals(toCompare.getName());
     }
 
-    public int getSize()
-    {
+    public int getSize() {
         return size;
     }
 
 }
 
-class BinIstr
-{
+class BinIstr {
     ListDL bytes;
 
-    public BinIstr()
-    {
+    public BinIstr() {
         bytes = new ListDL();
     }
 
-    public void insertByte(Binary8 _byte)
-    {
+    public void insertByte(Binary8 _byte) {
         bytes.insertTail(_byte);
     }
 
-    public void insertByte(Binary8 _byte, int index)
-    {
+    public void insertByte(Binary8 _byte, int index) {
         bytes.rewind();
         int i = 0;
         while (bytes.hasNext() && i++ <= index)
@@ -1207,13 +1058,11 @@ class BinIstr
         bytes.insertNext(_byte);
     }
 
-    public ListDL getBytes()
-    {
+    public ListDL getBytes() {
         return bytes;
     }
 
-    public String toString()
-    {
+    public String toString() {
         String toReturn = "";
         bytes.rewind();
         while (bytes.hasNext())
@@ -1223,46 +1072,38 @@ class BinIstr
 
 }
 
-class Simbolo
-{
+class Simbolo {
     String name;
     int offset;
 
-    public Simbolo(String _name, int _offset)
-    {
+    public Simbolo(String _name, int _offset) {
         name = _name;
         offset = _offset;
     }
 
-    public String getName()
-    {
+    public String getName() {
         return name;
     }
 
-    public int getOffset()
-    {
+    public int getOffset() {
         return offset;
     }
 }
 
-class Label
-{
+class Label {
     String name;
     int byteN;
 
-    public Label(String _name, int _byteN)
-    {
+    public Label(String _name, int _byteN) {
         name = _name;
         byteN = _byteN;
     }
 
-    public int getByte()
-    {
+    public int getByte() {
         return byteN;
     }
 
-    public String getName()
-    {
+    public String getName() {
         return name;
     }
 }

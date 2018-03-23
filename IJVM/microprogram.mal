@@ -1,5 +1,23 @@
 Main1: PC=PC+1; fetch; goto(MBR)
 (0x00)nop1:; goto Main1
+
+(0xFF)halt1:;
+halt1:; goto halt1
+
+(0xFD)out1:;
+out1:OPC=H=-1
+OPC=H+OPC
+MAR=H+OPC           // compute OUT address
+MDR=TOS; wr         // write to output
+MAR=SP=SP-1; rd                 // decrement stack pointer
+TOS=MDR; goto Main1
+
+(0xFC)in1:OPC=H=-1
+OPC=H+OPC
+MAR=H+OPC;rd            // compute IN address ; read from input
+MAR=SP=SP+1         // increment SP; wait for read
+TOS=MDR;wr ; goto Main1     // Write 
+
 (0x60)iadd1: MAR=SP=SP-1; rd
 H=TOS
 MDR=TOS=MDR+H; wr; goto Main1

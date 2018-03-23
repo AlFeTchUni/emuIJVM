@@ -1,19 +1,21 @@
 package MIC1.CPU;
 
-import ADT.Queue.*;
-import MAL.*;
-import Numbers.*;
-import MIC1.Components.*;
-
-import java.util.Scanner;
-
+import ADT.Queue.Queue;
 import Emulator.Emulator;
+import MIC1.Components.*;
+import Numbers.Binary32;
+import Numbers.Binary8;
 
 /*
   Versione modificata per IJVM della cpu del MIC1
 */
-public class MIC1 implements Runnable
-{
+public class MIC1 implements Runnable {
+    final String[] registers = {"MAR", "MDR", "PC", "MBR", "SP", "LV", "CPP", "TOS", "OPC", "H"};
+    int stop = 0;
+    //a chi dire che la computazione è completata
+    Emulator toAdvise;
+    //esegue un solo step, ovvero si ferma quando la mpccontrol contiene l'indirzzodi Main1
+    boolean step = false;
     //all the components
     private ALU alu;
     private DataPath dataPath;
@@ -34,16 +36,9 @@ public class MIC1 implements Runnable
     private boolean halt;
     //if was requested a no-end loop.
     private boolean infinity = false;
-    final String[] registers = {"MAR", "MDR", "PC", "MBR", "SP", "LV", "CPP", "TOS", "OPC", "H"};
-    int stop = 0;
-    //a chi dire che la computazione è completata
-    Emulator toAdvise;
-    //esegue un solo step, ovvero si ferma quando la mpccontrol contiene l'indirzzodi Main1
-    boolean step = false;
 
     //il costruttore
-    public MIC1()
-    {
+    public MIC1() {
         dataPath = new DataPath();
         alu = new ALU(dataPath);
         cStore = new controlStore();
@@ -57,60 +52,46 @@ public class MIC1 implements Runnable
     }
 
     //gives back memory content in matrix form.
-    public int[][] getMemoryContent()
-    {
+    public int[][] getMemoryContent() {
         return mem32.getMemoryContent();
     }
 
     //methods requested by runnable interface,it calls execute.
-    public Memory32 getMemory()
-    {
+    public Memory32 getMemory() {
         return mem32;
     }
 
-    public void run()
-    {
+    public void run() {
         execute();
     }
 
     //imposta il controlStore
-    public void setControlStore(controlStore _toSet)
-    {
+    public void setControlStore(controlStore _toSet) {
         cStore = _toSet;
     }
 
     //called from the emulator, if user inserted a possible looping code
-    public void setInfinity(boolean inf)
-    {
+    public void setInfinity(boolean inf) {
         infinity = inf;
     }
 
     //gives back MIR register
-    public String getMir()
-    {
+    public String getMir() {
         return mir.getInstruction();
     }
 
     //setta l'emulatore a cui dire che la computazione è finita
-    public void setEmulator(Emulator toSet)
-    {
+    public void setEmulator(Emulator toSet) {
         toAdvise = toSet;
     }
 
-    public void setMPC(String mpcValue)
-    {
-        mpcStart = mpcValue;
-    }
-
     //execute MIR instruction
-    public void execute()
-    {
+    public void execute() {
         boolean ultima = false;
         int cont = 0;
         boolean forHalt = false;
         //this cycle has its stop only when the algorhitm was executed or halt variable has true value.
-        while (true)
-        {
+        while (true) {
             //CHARGE MIR WITH NEW INSTRUCTION
             mir = new MIR(cStore.getMicInstruction(mpcControl.getMPC()));
             //pick from Mir the instruction to execute.
@@ -125,28 +106,24 @@ public class MIC1 implements Runnable
             dataPath.assign(now.substring(20, 29));
             //MDR and MBR receivers its data, if there was a memory read.
             //memory manage, if queue of read data is not empty it pops an element.
-            if (!readed.isEmpty())
-            {
+            if (!readed.isEmpty()) {
                 Binary32 data = (Binary32) readed.dequeue();
                 if (data != null)
                     dataPath.setMDR(data);
             }
-            if (!fetched.isEmpty())
-            {
+            if (!fetched.isEmpty()) {
                 Binary8 data = (Binary8) fetched.dequeue();
                 if (data != null)
                     dataPath.setMBR(data);
             }
-            if (!toWrite.isEmpty())
-            {
+            if (!toWrite.isEmpty()) {
                 toWriteData toWriteN = (toWriteData) toWrite.dequeue();
                 if (toWriteN != null)
                     mem32.wr(toWriteN.getAddress(), toWriteN.getData());
             }
 
             //BEGIN OF THE READ/WRITE MEMORY PROCESS.
-            if (!mir.getInstruction().substring(29, 32).equals("000"))
-            {
+            if (!mir.getInstruction().substring(29, 32).equals("000")) {
                 //delayed wr operation
                 if (mir.getInstruction().charAt(29) == '1')
                     toWrite.enqueue(new toWriteData(new Binary32(dataPath.getMAR().getValue()),
@@ -162,8 +139,7 @@ public class MIC1 implements Runnable
             //NOW IT CAN CHARGE MPC WITH THE ADDRESS OF THE NEXT INSTRUCTION
             mpcControl = new MPCControl(mir, alu, dataPath);
             //check if was requested an halt operation or if it arrived to the last algorithm instruction.
-            if (halt || forHalt)
-            {
+            if (halt || forHalt) {
                 halt = false;
                 //emulator need to be noticed that compilation was successfull.
                 toAdvise.complete();
@@ -176,51 +152,41 @@ public class MIC1 implements Runnable
     }
 
     //restituisce il byte dopo il quale la computazione si deve fermare
-    public int getStop()
-    {
+    public int getStop() {
         return stop;
     }
 
-    public boolean getAluZ()
-    {
+    public boolean getAluZ() {
         return alu.getZ();
     }
 
-    public boolean getAluN()
-    {
+    public boolean getAluN() {
         return alu.getN();
     }
 
-    public void writeRom(int _address, String _instruction)
-    {
+    public void writeRom(int _address, String _instruction) {
         cStore.writeMicInstruction(_address, _instruction);
     }
 
-    public controlStore getRom()
-    {
+    public controlStore getRom() {
         return cStore;
     }
 
-    public void setRom(controlStore _cStore)
-    {
+    public void setRom(controlStore _cStore) {
         cStore = _cStore;
     }
 
     //last execute instruction
-    public void setLast(String _lastIntruction)
-    {
+    public void setLast(String _lastIntruction) {
         lastInstruction = _lastIntruction;
     }
 
-    public void setStep(boolean toSet)
-    {
+    public void setStep(boolean toSet) {
         step = toSet;
     }
 
-
     //machine starts, it takes first instruction address from MAL, ed il byte a cui si deve fermare la computazione
-    public void start(String _instrNumber, int _stop)
-    {
+    public void start(String _instrNumber, int _stop) {
         mpcStart = _instrNumber;
         lastInstruction = _instrNumber;
         mpcControl.setMPC(_instrNumber);
@@ -228,8 +194,7 @@ public class MIC1 implements Runnable
     }
 
     //reset the machine
-    public void reset(String _instrNumber, int _stop)
-    {
+    public void reset(String _instrNumber, int _stop) {
         mir = new MIR("000000000000000000000000000000000000");
         start(_instrNumber, _stop);
         //svuoto le code di leturra/scrittura
@@ -243,8 +208,7 @@ public class MIC1 implements Runnable
     }
 
     //if we want to set a particular register
-    public void setRegister(String _nameR, int _value)
-    {
+    public void setRegister(String _nameR, int _value) {
         if (_nameR.equals("MAR"))
             dataPath.setMAR(_value);
         else if (_nameR.equals("MDR"))
@@ -263,8 +227,7 @@ public class MIC1 implements Runnable
             dataPath.setOPC(_value);
         else if (_nameR.equals("H"))
             dataPath.setH(_value);
-        else if (_nameR.equals("MBR"))
-        {
+        else if (_nameR.equals("MBR")) {
             if (_value >= -128 && _value <= 127)
                 dataPath.setMBR(_value);
             else
@@ -273,30 +236,28 @@ public class MIC1 implements Runnable
             throw new IllegalArgumentException("Invalid register name");
     }
 
-    public void setMBR(Binary8 value)
-    {
+    public void setMBR(Binary8 value) {
         dataPath.setMBR(value);
     }
 
     //apply halt, execute ends!
-    public void halt()
-    {
+    public void halt() {
         halt = true;
     }
 
-    public String getMPCStart()
-    {
+    public String getMPCStart() {
         return mpcStart;
     }
 
-    public String getMPC()
-    {
+    public String getMPC() {
         return mpcControl.getMPC();
     }
 
+    public void setMPC(String mpcValue) {
+        mpcStart = mpcValue;
+    }
 
-    public int getRegister(String _name)
-    {
+    public int getRegister(String _name) {
         int toReturn = 0;
         if (_name.equals("H"))
             toReturn = dataPath.getH().getDecimal();
@@ -322,17 +283,14 @@ public class MIC1 implements Runnable
     }
 
     //write to a specifiyng  address
-    public void writeMemory(int _address, int _value)
-    {
+    public void writeMemory(int _address, int _value) {
         mem32.wr(new Binary32(_address), new Binary32(_value));
     }
 
     //execution subdivision in subcycle
-    public String runSubCycle(int _subCycle)
-    {
+    public String runSubCycle(int _subCycle) {
         String toReturn = "";
-        switch (_subCycle)
-        {
+        switch (_subCycle) {
             case 1:
                 mir = new MIR(cStore.getMicInstruction(mpcControl.getMPC()));
                 break;
@@ -352,8 +310,7 @@ public class MIC1 implements Runnable
                 dataPath.assign(mir.getInstruction().substring(20, 29));
                 //MDR and MBR receives its data from the last datapath reading operation
                 //memory manage, if queue of readed data is not empty it pops an element
-                if (!readed.isEmpty())
-                {
+                if (!readed.isEmpty()) {
                     Binary32 data = (Binary32) readed.dequeue();
                     dataPath.setMDR(data);
                     if (readed.isEmpty())
@@ -361,8 +318,7 @@ public class MIC1 implements Runnable
                     else
                         toReturn += "rdNOT0";
                 }
-                if (!fetched.isEmpty())
-                {
+                if (!fetched.isEmpty()) {
                     Binary8 data = (Binary8) fetched.dequeue();
                     dataPath.setMBR(data);
                     if (fetched.isEmpty())
@@ -370,8 +326,7 @@ public class MIC1 implements Runnable
                     else
                         toReturn += "fetchNOT0";
                 }
-                if (!toWrite.isEmpty())
-                {
+                if (!toWrite.isEmpty()) {
                     toWriteData toWriteN = (toWriteData) toWrite.dequeue();
                     mem32.wr(toWriteN.getAddress(), toWriteN.getData());
                     if (toWrite.isEmpty())
@@ -380,23 +335,19 @@ public class MIC1 implements Runnable
                         toReturn += "wrNOT0";
                 }
                 //starts eventual memory reading
-                if (!mir.getInstruction().substring(29, 32).equals("000"))
-                {
+                if (!mir.getInstruction().substring(29, 32).equals("000")) {
                     //delayed wr operation
-                    if (mir.getInstruction().charAt(29) == '1')
-                    {
+                    if (mir.getInstruction().charAt(29) == '1') {
                         toWrite.enqueue(new toWriteData(dataPath.getMAR(), dataPath.getMDR()));
                         toReturn += "wrNOW0";
                     }
                     //delayed rd operation
-                    if (mir.getInstruction().charAt(30) == '1')
-                    {
+                    if (mir.getInstruction().charAt(30) == '1') {
                         readed.enqueue(mem32.rd(dataPath.getMAR()));
                         toReturn += "rdNOW0";
                     }
                     //delayed fetch operation
-                    if (mir.getInstruction().charAt(31) == '1')
-                    {
+                    if (mir.getInstruction().charAt(31) == '1') {
                         fetched.enqueue(mem32.fetch(dataPath.getPC()));
                         toReturn += "fetchNOW0";
                     }
@@ -410,24 +361,20 @@ public class MIC1 implements Runnable
 }
 
 //a support class for delayed memory writing
-class toWriteData
-{
+class toWriteData {
     private Binary32 address;
     private Binary32 data;
 
-    public toWriteData(Binary32 _address, Binary32 _data)
-    {
+    public toWriteData(Binary32 _address, Binary32 _data) {
         address = _address;
         data = _data;
     }
 
-    public Binary32 getAddress()
-    {
+    public Binary32 getAddress() {
         return address;
     }
 
-    public Binary32 getData()
-    {
+    public Binary32 getData() {
         return data;
     }
 }

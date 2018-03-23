@@ -1,12 +1,9 @@
 package GUI;
 
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Polygon;
-import javax.swing.JPanel;
+import javax.swing.*;
+import java.awt.*;
 
-public class Stack extends JPanel
-{
+public class Stack extends JPanel {
     //il disegno del registro
     private int[][] xArr;
     private int[][] yArr;
@@ -27,8 +24,7 @@ public class Stack extends JPanel
     private int[] sxArrowX;
     private int[] sxArrowY;
 
-    public Stack()
-    {
+    public Stack() {
         xArr = new int[0][4];
         yArr = new int[0][4];
         values = new int[0];
@@ -63,13 +59,11 @@ public class Stack extends JPanel
         sxArrowY[2] = 12;
     }
 
-    public void insertRegister()
-    {
+    public void insertRegister() {
         int[][] xArrN = new int[xArr.length + 1][4];
         int[][] yArrN = new int[xArr.length + 1][4];
         int[] valuesN = new int[xArr.length + 1];
-        for (int i = 0; i < xArr.length; i++)
-        {
+        for (int i = 0; i < xArr.length; i++) {
             xArrN[i] = xArr[i];
             yArrN[i] = yArr[i];
             valuesN[i] = values[i];
@@ -91,23 +85,20 @@ public class Stack extends JPanel
     }
 
     //sposta tutti i registri verso il basso
-    public void up()
-    {
+    public void up() {
         for (int i = 0; i < yArr.length; i++)
             for (int j = 0; j < 4; j++)
                 yArr[i][j] += 21;
     }
 
     //sposta tutti i registri verso l'alto
-    public void down()
-    {
+    public void down() {
         for (int i = 0; i < yArr.length; i++)
             for (int j = 0; j < 4; j++)
                 yArr[i][j] -= 21;
     }
 
-    public void setStackValues(int[] toSet)
-    {
+    public void setStackValues(int[] toSet) {
         //aggiorno i dati della cima dello stack ed lv
         for (int i = lv = values.length - toSet.length, j = 0; i < values.length && j < toSet.length; j++, i++)
             values[i] = toSet[j];
@@ -119,15 +110,12 @@ public class Stack extends JPanel
     }
 
 
-    public void deleteRegister()
-    {
-        if (xArr.length != 0)
-        {
+    public void deleteRegister() {
+        if (xArr.length != 0) {
             int[][] xArrN = new int[xArr.length - 1][4];
             int[][] yArrN = new int[xArr.length - 1][4];
             int[] valuesN = new int[values.length - 1];
-            for (int i = 0; i < xArrN.length; i++)
-            {
+            for (int i = 0; i < xArrN.length; i++) {
                 xArrN[i] = xArr[i];
                 yArrN[i] = yArr[i];
                 valuesN[i] = values[i];
@@ -141,19 +129,15 @@ public class Stack extends JPanel
             error = true;
     }
 
-    public void error()
-    {
+    public void error() {
         error = true;
     }
 
 
-    public void paintComponent(Graphics g)
-    {
+    public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        if (!error)
-        {
-            for (int i = 0; i < xArr.length; i++)
-            {
+        if (!error) {
+            for (int i = 0; i < xArr.length; i++) {
                 g.setColor(Color.GRAY);
                 g.fillPolygon(xArr[i], yArr[i], 4);
                 g.setColor(Color.WHITE);
@@ -162,13 +146,11 @@ public class Stack extends JPanel
                 //stampo la freccia verso destra che indica LV
 
             }
-            if (xArr.length > 1)
-            {
+            if (xArr.length > 1) {
                 g.setColor(Color.BLACK);
                 int[] nArrowY = new int[6];
                 //stampo le freccie di LV ed SP
-                if (lv < xArr.length)
-                {
+                if (lv < xArr.length) {
                     for (int i = 0; i < 3; i++)
                         nArrowY[i] = dxArrowY[i] + yArr[lv][3];
                     g.fillPolygon(dxArrowX, nArrowY, 3);
@@ -180,8 +162,7 @@ public class Stack extends JPanel
                 g.drawString("SP", 218, nArrowY[1]);
                 //stampo la freccia di linkPtr
                 int[] x = {80, 60, 60, 75};
-                if (linkPtr < yArr.length)
-                {
+                if (linkPtr < yArr.length) {
                     int[] y = {yArr[lv][3] + 10, yArr[lv][3] + 10, yArr[linkPtr][3] + 10, yArr[linkPtr][3] + 10};
                     g.drawPolyline(x, y, 4);
                     int[] nSxArrowY = new int[3];
@@ -191,8 +172,7 @@ public class Stack extends JPanel
                     g.fillPolygon(sxArrowX, nSxArrowY, 3);
                 }
             }
-        } else
-        {
+        } else {
             g.setColor(Color.RED);
             g.fillPolygon(xErr, yErr, 4);
             g.setColor(Color.WHITE);

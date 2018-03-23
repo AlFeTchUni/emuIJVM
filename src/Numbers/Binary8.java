@@ -1,41 +1,34 @@
 package Numbers;
 
 //8 bit numbers, they'll be the values that MBR can manage and moreover are the fetch gave back value.
-public class Binary8
-{
+public class Binary8 {
     private boolean[] value;
 
-    public Binary8(boolean[] _value)
-    {
+    public Binary8(boolean[] _value) {
         if (_value.length != 8)
             throw new IllegalArgumentException("I bit di questo tipo dati devono essere 8");
         value = _value;
     }
 
-    public Binary8()
-    {
+    public Binary8() {
         value = new boolean[8];
     }
 
-    public Binary8(int _value)
-    {
+    public Binary8(int _value) {
         value = new boolean[8];
         boolean negativo = false;
         int conv = _value;
-        if (conv < 0)
-        {
+        if (conv < 0) {
             value[0] = true;
             conv = 0 - conv;
             negativo = true;
         } else
             value[0] = false;
-        for (int i = 0; i < 7; i++)
-        {
+        for (int i = 0; i < 7; i++) {
             value[7 - i] = conv % 2 == 1;
             conv = conv / 2;
         }
-        if (negativo)
-        {
+        if (negativo) {
             for (int i = 0; i < 7; i++)
                 value[7 - i] = !value[7 - i];
             int i = 7;
@@ -46,11 +39,14 @@ public class Binary8
         }
     }
 
-    public String toString()
-    {
+    public static void main(String[] args) {
+        Binary8 number = new Binary8((byte) -10);
+        System.out.println(number);
+    }
+
+    public String toString() {
         String toReturn = "";
-        for (int i = 0; i < value.length; i++)
-        {
+        for (int i = 0; i < value.length; i++) {
             if (value[i])
                 toReturn += "1";
             else
@@ -59,26 +55,21 @@ public class Binary8
         return toReturn;
     }
 
-    public boolean[] getValue()
-    {
+    public boolean[] getValue() {
         return value;
     }
 
-    public boolean equals(Binary8 _compare)
-    {
-        for (int i = 0; i < _compare.getValue().length; i++)
-        {
+    public boolean equals(Binary8 _compare) {
+        for (int i = 0; i < _compare.getValue().length; i++) {
             if (_compare.getValue()[i] != value[i])
                 return false;
         }
         return true;
     }
 
-    public int getDecimal()
-    {
+    public int getDecimal() {
         //if number is negative
-        if (value[0])
-        {
+        if (value[0]) {
             //converts it in positive
             boolean[] conv = new boolean[8];
             for (int i = 0; i < 8; i++)
@@ -108,12 +99,6 @@ public class Binary8
             else
                 toReturn = 0 + 2 * toReturn;
         return toReturn;
-    }
-
-    public static void main(String[] args)
-    {
-        Binary8 number = new Binary8((byte) -10);
-        System.out.println(number);
     }
 }
 		

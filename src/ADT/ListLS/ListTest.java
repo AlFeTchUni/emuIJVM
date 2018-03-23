@@ -1,11 +1,7 @@
 package ADT.ListLS;
 
-import ADT.ListLS.ListLS;
-
-public class ListTest
-{
-    public static void main(String[] args)
-    {
+public class ListTest {
+    public static void main(String[] args) {
         //utilizzo la classe wrapper Integer per rappresentare dei valori interi nella lista
         Integer[] myInt = new Integer[100];
 
@@ -30,8 +26,7 @@ public class ListTest
 
         //riempio la lista usando i metodi di ListLS
         System.out.println("*******************************Riempio la lista usando i metodi di ListLS*******************************");
-        for (int i = 0; i < 100; i++)
-        {
+        for (int i = 0; i < 100; i++) {
             //lo inserisco in coda
             myList.insertTail((int) (Math.random() * 100));
             myList.insertHead((int) (Math.random() * 10));
@@ -48,8 +43,7 @@ public class ListTest
 
         //inserisco dopo il Node con valore 6 il valore 500, se � stato trovato
         System.out.println("*******************************Utilizzo insertAfter()*******************************");
-        if (myFinded)
-        {
+        if (myFinded) {
             myList.insertNext(500);
             System.out.print("Inserito Node con valore 500 dopo quello con valore 5, ora ristampo la lista\n");
             myList.printList();
@@ -57,8 +51,7 @@ public class ListTest
 
         //svuoto la lista senza usare makeEmpty
         System.out.println("*******************************Svuoto la lista senza usare makeEmpty()*******************************");
-        while (!myList.isEmpty())
-        {
+        while (!myList.isEmpty()) {
             System.out.printf("Eliminato %s\n", myList.deleteHead());
         }
 
@@ -68,8 +61,7 @@ public class ListTest
 
         //inserisco degli elementi ordinati
         System.out.println("*******************************Inserisco degli elementi in modo ordinato*******************************");
-        for (int i = 0; i < 100; i++)
-        {
+        for (int i = 0; i < 100; i++) {
             myList.insertOrdered((int) (Math.random() * 100));
         }
         System.out.println("*******************************Stampo la lista ordinata*******************************");

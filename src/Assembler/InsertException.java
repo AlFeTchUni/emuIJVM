@@ -1,9 +1,7 @@
 package Assembler;
 
-public class InsertException extends RuntimeException
-{
-    public InsertException(String msg)
-    {
+public class InsertException extends RuntimeException {
+    public InsertException(String msg) {
         super(msg);
     }
 }

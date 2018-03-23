@@ -2,8 +2,18 @@ package OtherStuff;
 
 import Emulator.SystemError;
 
-public class BrowserControl
-{
+public class BrowserControl {
+    // Used to identify the windows platform.
+    private static final String WIN_ID = "Windows";
+    // The default system browser under windows.
+    private static final String WIN_PATH = "rundll32";
+    // The flag to display a url.
+    private static final String WIN_FLAG = "url.dll,FileProtocolHandler";
+    // The default browser under unix.
+    private static final String UNIX_PATH = "firefox";
+    // The flag to display a url.
+    private static final String UNIX_FLAG = "-remote openURL";
+
     /**
      * Display a file in the system browser.  If you want to display a
      * file, you must include the absolute path name.
@@ -12,19 +22,15 @@ public class BrowserControl
      *            or
      *            "file://").
      */
-    public static void displayURL(String url)
-    {
+    public static void displayURL(String url) {
         boolean windows = isWindowsPlatform();
         String cmd = null;
-        try
-        {
-            if (windows)
-            {
+        try {
+            if (windows) {
                 // cmd = 'rundll32 url.dll,FileProtocolHandler http://...'
                 cmd = WIN_PATH + " " + WIN_FLAG + " " + url;
                 Process p = Runtime.getRuntime().exec(cmd);
-            } else
-            {
+            } else {
                 // Under Unix, Netscape has to be running for the "-remote"
                 // command to work.  So, we try sending the command and
                 // check for an exit value.  If the exit command is 0,
@@ -32,26 +38,22 @@ public class BrowserControl
                 // cmd = 'netscape -remote openURL(http://www.javaworld.com)'
                 cmd = UNIX_PATH + " " + UNIX_FLAG + "(" + url + ")";
                 Process p = Runtime.getRuntime().exec(cmd);
-                try
-                {
+                try {
                     // wait for exit code -- if it's 0, command worked,
                     // otherwise we need to start the browser up.
                     int exitCode = p.waitFor();
-                    if (exitCode != 0)
-                    {
+                    if (exitCode != 0) {
                         // Command failed, start up the browser
                         // cmd = 'netscape http://www.javaworld.com'
                         cmd = UNIX_PATH + " " + url;
                         p = Runtime.getRuntime().exec(cmd);
                     }
-                } catch (InterruptedException x)
-                {
+                } catch (InterruptedException x) {
                     throw new SystemError("Error bringing up browser, cmd='" +
                             cmd + "'");
                 }
             }
-        } catch (Exception x)
-        {
+        } catch (Exception x) {
             // couldn't exec browser
             throw new SystemError("Could not invoke browser, command=" + cmd);
         }
@@ -63,8 +65,7 @@ public class BrowserControl
      *
      * @return true if this application is running under a Windows OS
      */
-    public static boolean isWindowsPlatform()
-    {
+    public static boolean isWindowsPlatform() {
         String os = System.getProperty("os.name");
         if (os != null && os.startsWith(WIN_ID))
             return true;
@@ -75,19 +76,7 @@ public class BrowserControl
     /**
      * Simple example.
      */
-    public static void main(String[] args)
-    {
+    public static void main(String[] args) {
         displayURL("http://www.javaworld.com");
     }
-
-    // Used to identify the windows platform.
-    private static final String WIN_ID = "Windows";
-    // The default system browser under windows.
-    private static final String WIN_PATH = "rundll32";
-    // The flag to display a url.
-    private static final String WIN_FLAG = "url.dll,FileProtocolHandler";
-    // The default browser under unix.
-    private static final String UNIX_PATH = "firefox";
-    // The flag to display a url.
-    private static final String UNIX_FLAG = "-remote openURL";
 }

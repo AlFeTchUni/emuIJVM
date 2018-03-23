@@ -1,11 +1,7 @@
 package ADT.ListDL;
 
-import ADT.ListDL.*;
-
-public class ListDLTest
-{
-    public static void main(String[] args)
-    {
+public class ListDLTest {
+    public static void main(String[] args) {
         //creo un oggetto ListDL
         ListDL myListDL = new ListDL();
         System.out.println("-------------\nLista creata!\n-------------");
@@ -18,8 +14,7 @@ public class ListDLTest
         //inserisco un p� di nodi
         System.out.println("-------------\nInserisco un p� di nodi\n-------------");
         int total = (int) (Math.random() * 50);
-        for (int i = 0; i < total; i++)
-        {
+        for (int i = 0; i < total; i++) {
             int myInt = (int) (Math.random() * 10);
             if (myInt % 2 == 0)
                 myListDL.insertHead(myInt);
@@ -36,8 +31,7 @@ public class ListDLTest
         //riavvolgo la lista
         myListDL.rewind();
         //faccio la ricerca di tutti i 5
-        while (myListDL.locateNext(5))
-        {
+        while (myListDL.locateNext(5)) {
             myListDL.insertPrev(500);
             myListDL.insertNext(500);
             //System.out.println("Trovato");
@@ -51,8 +45,7 @@ public class ListDLTest
         myListDL.printList();
         System.out.println("-------------\nSvuto la lista con deleteHead\n-------------");
         //svuoto la lista
-        while (!myListDL.isEmpty())
-        {
+        while (!myListDL.isEmpty()) {
             myListDL.deleteHead();
         }
         System.out.println("-------------\nStampo la lista\n-------------");

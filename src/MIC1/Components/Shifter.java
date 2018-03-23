@@ -1,24 +1,20 @@
 package MIC1.Components;
 
-import Numbers.*;
+import Numbers.Binary32;
 
 /*
 	Shifter component, only useful for the alu!
 */
-public class Shifter
-{
+public class Shifter {
     private DataPath dataPath;
 
-    public Shifter(DataPath _dataPath)
-    {
+    public Shifter(DataPath _dataPath) {
         dataPath = _dataPath;
     }
 
-    public void execute(String _code, Binary32 toShift)
-    {
+    public void execute(String _code, Binary32 toShift) {
         //8 positions left shift
-        if (_code.equals("10"))
-        {
+        if (_code.equals("10")) {
             boolean[] newB = new boolean[32];
             boolean[] oldB = toShift.getValue();
             for (int i = 31; i > 23; i--)
@@ -28,8 +24,7 @@ public class Shifter
             dataPath.setBusC(new Binary32(newB));
         }
         //1 position right shift
-        else if (_code.equals("01"))
-        {
+        else if (_code.equals("01")) {
             boolean[] newB = new boolean[32];
             boolean[] oldB = toShift.getValue();
             boolean oldVal = oldB[0];

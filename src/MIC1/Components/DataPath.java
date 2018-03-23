@@ -1,6 +1,7 @@
 package MIC1.Components;
 
-import Numbers.*;
+import Numbers.Binary32;
+import Numbers.Binary8;
 
 /*
 	Mic-1 status, or the complements of registers and bus, that's why i called this class dataPath.
@@ -8,8 +9,7 @@ import Numbers.*;
 	particular register when the program is not started, we can make this anomaly.
 	The only register that as a get are MAR and PC
 */
-public class DataPath
-{
+public class DataPath {
     //registers
     private Binary32 MAR;
     private Binary32 MDR;
@@ -25,8 +25,7 @@ public class DataPath
     private Binary32 busC;
 
     //constructor
-    public DataPath()
-    {
+    public DataPath() {
         MAR = new Binary32();
         MDR = new Binary32();
         PC = new Binary32();
@@ -42,32 +41,26 @@ public class DataPath
     }
 
     //gives back A bus (or really H), makes request of this methods to the alu.
-    public Binary32 getBusA()
-    {
+    public Binary32 getBusA() {
         return new Binary32(H.getValue());
     }
 
     //gives back B bus, yet initialized by readFrom.
-    public Binary32 getBusB()
-    {
+    public Binary32 getBusB() {
         return busB;
     }
 
     //sets C bus(values sum by alu+shifter).
-    public void setBusC(Binary32 _value)
-    {
+    public void setBusC(Binary32 _value) {
         busC = _value;
     }
 
     //assigns C bus to registers that has 1 in it's MIR bit.
-    public void assign(String _code)
-    {
+    public void assign(String _code) {
         if (_code.length() != 9)
             throw new IllegalArgumentException("il codice assegnamento deve essere di 9 bit");
-        for (int i = 0; i < 9; i++)
-        {
-            switch (i)
-            {
+        for (int i = 0; i < 9; i++) {
+            switch (i) {
                 case 0:
                     if (_code.charAt(i) == '1')
                         H = new Binary32(busC.getValue());
@@ -77,8 +70,12 @@ public class DataPath
                         OPC = new Binary32(busC.getValue());
                     break;
                 case 2:
-                    if (_code.charAt(i) == '1')
+                    if (_code.charAt(i) == '1') {
+                        if (TOS.getDecimal() == busC.getDecimal() && _code.equals("001000000"))
+                            System.out.print((char) TOS.getDecimal());
                         TOS = new Binary32(busC.getValue());
+                    }
+
                     break;
                 case 3:
                     if (_code.charAt(i) == '1')
@@ -109,8 +106,7 @@ public class DataPath
     }
 
     //assigns a register to B bus, choosed with its value, implementation idea of the 4-to-16 decoder.
-    public void readFrom(String _code)
-    {
+    public void readFrom(String _code) {
         if (_code.equals("0000"))
             busB = new Binary32(MDR.getValue());
         else if (_code.equals("0001"))
@@ -132,8 +128,7 @@ public class DataPath
     }
 
     //extends signed MBR in B bus.
-    private void extendsMBR()
-    {
+    private void extendsMBR() {
         boolean[] mbr = MBR.getValue();
         boolean[] exMbr = new boolean[32];
         for (int i = 0; i < 8; i++)
@@ -144,8 +139,7 @@ public class DataPath
     }
 
     //exteds no signed MBR in B bus
-    private void extendsMBRU()
-    {
+    private void extendsMBRU() {
         boolean[] mbr = MBR.getValue();
         boolean[] exMbr = new boolean[32];
         for (int i = 0; i < 8; i++)
@@ -156,121 +150,97 @@ public class DataPath
     }
 
     //metodi get per i registri
-    public Binary8 getMBR()
-    {
+    public Binary8 getMBR() {
         return MBR;
     }
 
-    public Binary32 getPC()
-    {
-        return PC;
-    }
-
-    public Binary32 getMDR()
-    {
-        return MDR;
-    }
-
-
-    public Binary32 getMAR()
-    {
-        return MAR;
-    }
-
-    public Binary32 getTOS()
-    {
-        return TOS;
-    }
-
-    public Binary32 getOPC()
-    {
-        return OPC;
-    }
-
-    public Binary32 getCPP()
-    {
-        return CPP;
-    }
-
-    public Binary32 getLV()
-    {
-        return LV;
-    }
-
-    public Binary32 getSP()
-    {
-        return SP;
-    }
-
-    public Binary32 getH()
-    {
-        return H;
-    }
-
-    //set methods for all the registers
-    public void setMAR(int _value)
-    {
-        MAR = new Binary32(_value);
-    }
-
-    public void setMDR(int _value)
-    {
-        MDR = new Binary32(_value);
-    }
-
-    public void setPC(int _value)
-    {
-        PC = new Binary32(_value);
-    }
-
-    public void setSP(int _value)
-    {
-        SP = new Binary32(_value);
-    }
-
-    public void setLV(int _value)
-    {
-        LV = new Binary32(_value);
-    }
-
-    public void setCPP(int _value)
-    {
-        CPP = new Binary32(_value);
-    }
-
-    public void setTOS(int _value)
-    {
-        TOS = new Binary32(_value);
-    }
-
-    public void setOPC(int _value)
-    {
-        OPC = new Binary32(_value);
-    }
-
-    public void setH(int _value)
-    {
-        H = new Binary32(_value);
-    }
-
-    public void setMBR(Binary8 _value)
-    {
-        MBR = _value;
-    }
-
-    public void setMBR(int _value)
-    {
+    public void setMBR(int _value) {
         MBR = new Binary8(_value);
     }
 
-    public void setMDR(Binary32 _value)
-    {
+    public void setMBR(Binary8 _value) {
+        MBR = _value;
+    }
+
+    public Binary32 getPC() {
+        return PC;
+    }
+
+    public void setPC(int _value) {
+        PC = new Binary32(_value);
+    }
+
+    public Binary32 getMDR() {
+        return MDR;
+    }
+
+    public void setMDR(Binary32 _value) {
         MDR = _value;
     }
 
+    public void setMDR(int _value) {
+        MDR = new Binary32(_value);
+    }
+
+    public Binary32 getMAR() {
+        return MAR;
+    }
+
+    //set methods for all the registers
+    public void setMAR(int _value) {
+        MAR = new Binary32(_value);
+    }
+
+    public Binary32 getTOS() {
+        return TOS;
+    }
+
+    public void setTOS(int _value) {
+        TOS = new Binary32(_value);
+    }
+
+    public Binary32 getOPC() {
+        return OPC;
+    }
+
+    public void setOPC(int _value) {
+        OPC = new Binary32(_value);
+    }
+
+    public Binary32 getCPP() {
+        return CPP;
+    }
+
+    public void setCPP(int _value) {
+        CPP = new Binary32(_value);
+    }
+
+    public Binary32 getLV() {
+        return LV;
+    }
+
+    public void setLV(int _value) {
+        LV = new Binary32(_value);
+    }
+
+    public Binary32 getSP() {
+        return SP;
+    }
+
+    public void setSP(int _value) {
+        SP = new Binary32(_value);
+    }
+
+    public Binary32 getH() {
+        return H;
+    }
+
+    public void setH(int _value) {
+        H = new Binary32(_value);
+    }
+
     //prints all the register contents in video.
-    public void printDecimal()
-    {
+    public void printDecimal() {
         System.out.println("MAR: " + MAR.getDecimal());
         System.out.println("MDR: " + MDR.getDecimal());
         System.out.println("PC: " + PC.getDecimal());
@@ -283,8 +253,7 @@ public class DataPath
         System.out.println("H: " + H.getDecimal());
     }
 
-    public void printBinary()
-    {
+    public void printBinary() {
         System.out.println("MAR: \t" + MAR);
         System.out.println("MDR: \t" + MDR);
         System.out.println("PC : \t" + PC);

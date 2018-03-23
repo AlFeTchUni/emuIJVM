@@ -1,8 +1,9 @@
 package MIC1.Components;
 
-import Numbers.*;
-import ADT.ListLS.*;
-import ADT.ListDL.*;
+import ADT.ListDL.ListDL;
+import ADT.ListLS.ListLS;
+import Numbers.Binary32;
+import Numbers.Binary8;
 
 /*
   Memory32 class represents the MIC-1 hardware memory.
@@ -10,29 +11,39 @@ import ADT.ListDL.*;
   Wr, rd and fetch methods are implemented with the help of MIC-1 memory.
   The list contains MemoryCell objects, defined by an address and a value.
 */
-public class Memory32
-{
+public class Memory32 {
     private ListLS data;
 
     //no arguments constructor
-    public Memory32()
-    {
+    public Memory32() {
         data = new ListLS();
     }
 
+    //a simple test
+    public static void main(String[] args) {
+        Memory32 mem = new Memory32();
+        mem.wr(new Binary32(0), new Binary32(-607095434));
+        mem.wr(new Binary32(2), new Binary32(10));
+        mem.wr(new Binary32(2), new Binary32(-20));
+        mem.wr(new Binary32(6), new Binary32(7));
+        mem.wr(new Binary32(1), new Binary32(1));
+        mem.wr(new Binary32(0), new Binary32(1));
+        mem.wr(new Binary32(-1), new Binary32(1));
+        System.out.println(mem);
+        System.out.println(mem.fetch(new Binary32(7)));
+        System.out.println(mem.rd(new Binary32(6)));
+    }
+
     //writes a value in a memory cell.
-    public void wr(Binary32 _addr, Binary32 _value)
-    {
+    public void wr(Binary32 _addr, Binary32 _value) {
         MemoryCell cella = new MemoryCell(_addr, _value);
         data.rewind();
         //if list is empty insert in the head of the list
         if (data.isEmpty())
             data.insertHead(cella);
-        else
-        {
+        else {
             //if memory cell is littler than the head inserts the cell in list head.
-            if (((MemoryCell) data.getHead()).compareTo(cella) == 1)
-            {
+            if (((MemoryCell) data.getHead()).compareTo(cella) == 1) {
                 data.insertHead(cella);
                 return;
             }
@@ -41,8 +52,7 @@ public class Memory32
                 data.saveNow();
             //if cell in which cycle has become to stop is the
             //same(in order to the address)to the toinsert cell it substitutes the cell.
-            if (((MemoryCell) data.getNow()).equals(cella))
-            {
+            if (((MemoryCell) data.getNow()).equals(cella)) {
                 data.setNow(cella);
                 return;
             }
@@ -52,8 +62,7 @@ public class Memory32
         }
     }
 
-    public Binary32 rd(Binary32 _addr)
-    {
+    public Binary32 rd(Binary32 _addr) {
         //create a cell with the same address as the desidered one with phony content value.
         MemoryCell cella = new MemoryCell(_addr, new Binary32(0));
         //if list is empty gives back null.
@@ -72,27 +81,22 @@ public class Memory32
     }
 
     //gives back the byte of _addr position in memory, as the mic-1 do!
-    public Binary8 fetch(Binary32 _addr)
-    {
+    public Binary8 fetch(Binary32 _addr) {
         //word where is found the byte
         int parola = _addr.getDecimal() / 4;
-        try
-        {
+        try {
             //if it founds the desidered byte gives back it.
             return (rd(new Binary32(parola))).getByte(_addr.getDecimal() % 4);
-        } catch (NullPointerException e)
-        {
+        } catch (NullPointerException e) {
             //else it does a beloved nothing and...
-        } catch (IllegalArgumentException e)
-        {
+        } catch (IllegalArgumentException e) {
         }
         //gives back a byte of 0.
         return new Binary8(0);
     }
 
     //prints the memory contents.
-    public String toString()
-    {
+    public String toString() {
         String output = "";
         if (data.isEmpty())
             return output;
@@ -102,13 +106,11 @@ public class Memory32
         return output;
     }
 
-    public int[][] getMemoryContent()
-    {
+    public int[][] getMemoryContent() {
         int[][] toReturn = new int[data.getSize()][2];
         data.rewind();
         int i = 0;
-        while (data.hasNext())
-        {
+        while (data.hasNext()) {
             MemoryCell now = (MemoryCell) data.next();
             toReturn[i][0] = now.getAddress().getDecimal();
             toReturn[i++][1] = now.getData().getDecimal();
@@ -116,13 +118,11 @@ public class Memory32
         return toReturn;
     }
 
-    public Binary32[][] getMemoryBinary()
-    {
+    public Binary32[][] getMemoryBinary() {
         Binary32[][] toReturn = new Binary32[data.getSize()][2];
         data.rewind();
         int i = 0;
-        while (data.hasNext())
-        {
+        while (data.hasNext()) {
             MemoryCell now = (MemoryCell) data.next();
             toReturn[i][0] = now.getAddress();
             toReturn[i++][1] = now.getData();
@@ -131,15 +131,12 @@ public class Memory32
     }
 
     //elimina tutte le celle di memoria dall'indirizzo _start in su
-    public void deleteFrom(int _start)
-    {
+    public void deleteFrom(int _start) {
         data.rewind();
-        while (data.hasNext())
-        {
+        while (data.hasNext()) {
             data.saveNow();
             MemoryCell next = (MemoryCell) data.next();
-            if (next.getAddress().getDecimal() >= _start)
-            {
+            if (next.getAddress().getDecimal() >= _start) {
                 data.restoreNow();
                 data.deleteNext();
             }
@@ -147,26 +144,21 @@ public class Memory32
     }
 
     //restituisce un array contenente i valori da un indirizzo _start ad un indirizzo _stop
-    public int[] getValuesFrom(int _start, int _stop)
-    {
+    public int[] getValuesFrom(int _start, int _stop) {
         if (_stop < _start)
             return new int[0];
         data.rewind();
         ListDL toReturnL = new ListDL();
         int nowAddr = _start;
-        while (data.hasNext())
-        {
+        while (data.hasNext()) {
             data.saveNow();
             MemoryCell now = (MemoryCell) data.next();
-            if (now.getAddress().getDecimal() >= _start)
-            {
+            if (now.getAddress().getDecimal() >= _start) {
                 //è possibile che l'indirizzo nowAddr non esiste, il valore da tornare è dunque 0
-                if (now.getAddress().getDecimal() == nowAddr)
-                {
+                if (now.getAddress().getDecimal() == nowAddr) {
                     toReturnL.insertTail(now.getData().getDecimal());
                     nowAddr++;
-                } else
-                {
+                } else {
                     toReturnL.insertTail(0);
                     nowAddr++;
                     data.restoreNow();
@@ -181,66 +173,42 @@ public class Memory32
             toReturn[i] = (Integer) toReturnL.next();
         return toReturn;
     }
-
-    //a simple test
-    public static void main(String[] args)
-    {
-        Memory32 mem = new Memory32();
-        mem.wr(new Binary32(0), new Binary32(-607095434));
-        mem.wr(new Binary32(2), new Binary32(10));
-        mem.wr(new Binary32(2), new Binary32(-20));
-        mem.wr(new Binary32(6), new Binary32(7));
-        mem.wr(new Binary32(1), new Binary32(1));
-        mem.wr(new Binary32(0), new Binary32(1));
-        mem.wr(new Binary32(-1), new Binary32(1));
-        System.out.println(mem);
-        System.out.println(mem.fetch(new Binary32(7)));
-        System.out.println(mem.rd(new Binary32(6)));
-    }
 }
 
 //MemoryCell class, the object to be insert in the linked list.
-class MemoryCell implements Comparable<MemoryCell>
-{
+class MemoryCell implements Comparable<MemoryCell> {
     private Binary32 address;
     private Binary32 data;
 
-    public MemoryCell(Binary32 _address, Binary32 _data)
-    {
+    public MemoryCell(Binary32 _address, Binary32 _data) {
         address = _address;
         data = _data;
     }
 
-    public Binary32 getAddress()
-    {
+    public Binary32 getAddress() {
         return address;
     }
 
-    public Binary32 getData()
-    {
+    public Binary32 getData() {
         return data;
     }
 
-    public void setData(Binary32 _data)
-    {
+    public void setData(Binary32 _data) {
         data = _data;
     }
 
     //compares address in unsigned mode, this way it obtains that 00 is minor than 11 (binary obviuosly!)
-    public int compareTo(MemoryCell _toCompare)
-    {
+    public int compareTo(MemoryCell _toCompare) {
         return this.address.compareToUnsigned(_toCompare.getAddress());
     }
 
     //gives back true if memory cells has the same address.
-    public boolean equals(MemoryCell _toCompare)
-    {
+    public boolean equals(MemoryCell _toCompare) {
         return address.equals(_toCompare.getAddress());
     }
 
     //gives back address+value
-    public String toString()
-    {
+    public String toString() {
         return address.getDecimal() + " " + (address.getDecimal() >= 65536 ? data.toString() : data.getDecimal());
     }
 }

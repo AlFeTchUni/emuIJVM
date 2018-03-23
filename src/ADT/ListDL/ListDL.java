@@ -11,8 +11,7 @@ package ADT.ListDL;
 
 import ADT.Node.Node;
 
-public class ListDL
-{
+public class ListDL {
     private Node head;
     private Node tail;
     //la prossima variabile d'istanza server per poter navigare all'interno della lista
@@ -21,22 +20,19 @@ public class ListDL
     private int size;
 
     //il costruttore senza argomenti, semplicissimo
-    public ListDL()
-    {
+    public ListDL() {
         head = tail = now = null;
         size = 0;
     }
 
     //il costruttore con solo l'object che costituir� la testa e la coda
-    public ListDL(Object _head)
-    {
+    public ListDL(Object _head) {
         head = tail = now = new Node(_head);
         size = 1;
     }
 
     //il costruttore con due Object
-    public ListDL(Object _head, Object _tail)
-    {
+    public ListDL(Object _head, Object _tail) {
         head = new Node(_head);
         tail = new Node(_tail);
         tail.setPrev(head);
@@ -48,58 +44,49 @@ public class ListDL
     //metodi GET
 
     //restituisce la coda
-    public Object getTail()
-    {
+    public Object getTail() {
         return tail.getData();
     }
 
+    //modifca tail
+    public void setTail(Object _toSet) {
+        tail.setData(_toSet);
+    }
+
     //restituisce il nodo coda
-    public Node getTailNode()
-    {
+    public Node getTailNode() {
         return tail;
     }
 
     //restituisce la testa
-    public Object getHead()
-    {
+    public Object getHead() {
         return head.getData();
     }
 
-    //restituisce il Node testa
-    public Node getHeadNode()
-    {
-        return head;
-    }
-
-    //restituisce l'oggetto a cui punta now
-    public Object getNow()
-    {
-        return now.getData();
+    //modifica head
+    public void setHead(Object _toSet) {
+        head.setData(_toSet);
     }
 
     //metodi SET
 
-    //modifica head
-    public void setHead(Object _toSet)
-    {
-        head.setData(_toSet);
+    //restituisce il Node testa
+    public Node getHeadNode() {
+        return head;
     }
 
-    //modifca tail
-    public void setTail(Object _toSet)
-    {
-        tail.setData(_toSet);
+    //restituisce l'oggetto a cui punta now
+    public Object getNow() {
+        return now.getData();
     }
 
     //modifca now
-    public void setNow(Object _toSet)
-    {
+    public void setNow(Object _toSet) {
         now.setData(_toSet);
     }
 
     //modifca il successivo di now
-    public void setNext(Object _toSet)
-    {
+    public void setNext(Object _toSet) {
         if (now.getNext() != null)
             now.getNext().setData(_toSet);
         else
@@ -107,8 +94,7 @@ public class ListDL
     }
 
     //modifica il precedente di now
-    public void setPrev(Object _toSet)
-    {
+    public void setPrev(Object _toSet) {
         if (now.getPrev() != null)
             now.getPrev().setData(_toSet);
         else
@@ -118,10 +104,8 @@ public class ListDL
     //metodi utili per lo scorrimento della lista
 
     //restituisce l'oggetto contenuto nel successivo di now, e aggiorna now
-    public Object next()
-    {
-        if (now == null)
-        {
+    public Object next() {
+        if (now == null) {
             if (isEmpty())
                 return new EmptyListException("Empty list, no next!");
             now = head;
@@ -135,8 +119,7 @@ public class ListDL
     }
 
     //restituisce l'oggetto contenuto nel precedente di now, e aggiorna now
-    public Object prev()
-    {
+    public Object prev() {
         if (now.getPrev() != null)
             now = now.getPrev();
         else
@@ -145,20 +128,17 @@ public class ListDL
     }
 
     //riavvolge la lista in modo tale che now sia uguale ad head
-    public void rewind()
-    {
+    public void rewind() {
         now = null;
     }
 
     //riavvolge la lista in modo tale che now sia uguale a tail
-    public void fforward()
-    {
+    public void fforward() {
         now = tail;
     }
 
     //restituisce true se now ha un successivo
-    public boolean hasNext()
-    {
+    public boolean hasNext() {
         if (isEmpty())
             return false;
         if (now == null)
@@ -169,8 +149,7 @@ public class ListDL
     }
 
     //restituisce true se now ha un precedente
-    public boolean hasPrev()
-    {
+    public boolean hasPrev() {
         if (isEmpty())
             return false;
         if (now.getPrev() != null)
@@ -179,15 +158,13 @@ public class ListDL
     }
 
     //posiziona now alla prima occorrenza di _toLocate, parte dalla testa
-    public boolean locateFromHead(Object _toLocate)
-    {
+    public boolean locateFromHead(Object _toLocate) {
         Node old = now;
         rewind();
         while (hasNext())
             if (_toLocate.equals(next()))
                 return true;
-        if (tail.getData().equals(_toLocate))
-        {
+        if (tail.getData().equals(_toLocate)) {
             now = tail;
             return true;
         }
@@ -196,8 +173,7 @@ public class ListDL
     }
 
     //posiziona now alla prima occorrenza di _toLocate, parte dalla coda
-    public boolean locateFromTail(Object _toLocate)
-    {
+    public boolean locateFromTail(Object _toLocate) {
         Node old = now;
         fforward();
         if (now.getData().equals(_toLocate))
@@ -205,8 +181,7 @@ public class ListDL
         while (hasPrev())
             if (_toLocate.equals(prev()))
                 return true;
-        if (head.getData().equals(_toLocate))
-        {
+        if (head.getData().equals(_toLocate)) {
             now = head;
             return true;
         }
@@ -215,14 +190,12 @@ public class ListDL
     }
 
     //posiziona now alla prima occorrenza di _toLocate, parte dalla posizione di now in poi
-    public boolean locateNext(Object _toLocate)
-    {
+    public boolean locateNext(Object _toLocate) {
         Node old = now;
         while (hasNext())
             if (_toLocate.equals(next()))
                 return true;
-        if (tail.getData().equals(_toLocate))
-        {
+        if (tail.getData().equals(_toLocate)) {
             now = tail;
             return true;
         }
@@ -231,14 +204,12 @@ public class ListDL
     }
 
     //posiziona now alla prima occorrenza di _toLocate, parte dalla posizione di now a ritroso
-    public boolean locatePrev(Object _toLocate)
-    {
+    public boolean locatePrev(Object _toLocate) {
         Node old = now;
         while (hasPrev())
             if (_toLocate.equals(prev()))
                 return true;
-        if (head.getData().equals(_toLocate))
-        {
+        if (head.getData().equals(_toLocate)) {
             now = head;
             return true;
         }
@@ -248,10 +219,8 @@ public class ListDL
     //metodi insert
 
     //inserisce una nuova coda, parametro Object
-    public void insertTail(Object _newTail)
-    {
-        if (isEmpty())
-        {
+    public void insertTail(Object _newTail) {
+        if (isEmpty()) {
             head = tail = new Node(_newTail);
             size++;
             return;
@@ -266,10 +235,8 @@ public class ListDL
     }
 
     //inserisce una nuova testa
-    public void insertHead(Object _newHead)
-    {
-        if (isEmpty())
-        {
+    public void insertHead(Object _newHead) {
+        if (isEmpty()) {
             head = tail = new Node(_newHead);
             size = 1;
             return;
@@ -284,12 +251,10 @@ public class ListDL
     }
 
     //inserisce prima di now
-    public void insertPrev(Object _toInsert)
-    {
+    public void insertPrev(Object _toInsert) {
 
         //controllo che il prossimo elemento esista, se non esiste effettuo un inserimento in testa
-        if (hasPrev())
-        {
+        if (hasPrev()) {
             Node toInsert = new Node(_toInsert);
             toInsert.setNext(now);
             toInsert.setPrev(now.getPrev());
@@ -303,16 +268,13 @@ public class ListDL
     }
 
     //inserisce dopo di now
-    public void insertNext(Object _toInsert)
-    {
-        if (now == null)
-        {
+    public void insertNext(Object _toInsert) {
+        if (now == null) {
             insertHead(_toInsert);
             return;
         }
         //controllo che il prossimo elemento esista, se non esiste effettuo un inserimento in coda
-        if (hasNext())
-        {
+        if (hasNext()) {
             Node toInsert = new Node(_toInsert);
             toInsert.setPrev(now);
             toInsert.setNext(now.getNext());
@@ -328,14 +290,12 @@ public class ListDL
     //metodi delete
 
     //elimina head
-    public Object deleteHead()
-    {
+    public Object deleteHead() {
         if (isEmpty())
             throw new EmptyListException("Empty List, no delete actions are permitted");
         Node oldHead = head;
         head = head.getNext();
-        if (!isEmpty())
-        {
+        if (!isEmpty()) {
             head.setPrev(null);
             if (now == oldHead)
                 fforward();
@@ -345,14 +305,12 @@ public class ListDL
     }
 
     //tenta di rimuovere la coda
-    public Object deleteTail()
-    {
+    public Object deleteTail() {
         if (isEmpty())
             throw new EmptyListException("Empty List, no delete actions are permitted");
         Node oldTail = tail;
         tail = tail.getPrev();
-        if (tail != null)
-        {
+        if (tail != null) {
             tail.setNext(null);
             if (now == oldTail)
                 rewind();
@@ -363,12 +321,10 @@ public class ListDL
     }
 
     //rimuove now e sposta now in avanti
-    public Object deleteNow()
-    {
+    public Object deleteNow() {
         if (isEmpty())
             throw new EmptyListException("Empty List, no delete actions are permitted");
-        if (now == null)
-        {
+        if (now == null) {
             return deleteHead();
 
         }
@@ -385,8 +341,7 @@ public class ListDL
     }
 
     //rimuove dopo di now
-    public Object deleteNext()
-    {
+    public Object deleteNext() {
         if (isEmpty())
             throw new EmptyListException("Empty List, no delete actions are permitted");
         Object toReturn = now.getNext().getData();
@@ -397,8 +352,7 @@ public class ListDL
     }
 
     //rimuove prima di now
-    public Object deletePrev()
-    {
+    public Object deletePrev() {
         if (isEmpty())
             throw new EmptyListException("Empty List, no delete actions are permitted");
         Object toReturn = now.getPrev().getData();
@@ -409,8 +363,7 @@ public class ListDL
     }
 
     //rimuove tutte le occorrenze di _toDelete
-    public void delete(Object _toDelete)
-    {
+    public void delete(Object _toDelete) {
         if (isEmpty())
             throw new EmptyListException("Lista vuota");
         if (_toDelete.equals(head.getData()))
@@ -418,11 +371,9 @@ public class ListDL
         Node fromHead = head;
         Node fromHeadN = fromHead;
         //faccio una ricerca che parte dalla fine e dall'inizio fino ad arrivare al centro lista
-        while (fromHead != null)
-        {
+        while (fromHead != null) {
             //se trovo un'occorrenza aggiorno opportunamente
-            if (fromHead.getData().equals(_toDelete))
-            {
+            if (fromHead.getData().equals(_toDelete)) {
                 fromHead.getPrev().setNext(fromHead.getNext());
                 if (fromHead.getNext() != null)
                     fromHead.getNext().setPrev(fromHead.getPrev());
@@ -444,48 +395,40 @@ public class ListDL
     }
 
     //salva now
-    public void saveNow()
-    {
+    public void saveNow() {
         savedNow = now;
     }
 
-    public void restoreNow()
-    {
+    public void restoreNow() {
         now = savedNow;
     }
 
 
     //stampa la lista
-    public void printList()
-    {
-        if (isEmpty())
-        {
+    public void printList() {
+        if (isEmpty()) {
             System.out.println("No such elements");
             return;
         }
         Node current = head;
         int i = 0;
-        while (current != null)
-        {
+        while (current != null) {
             System.out.printf("Node:  %-3s valore: %-3s indirizzo: %-22s precedente: %-22s successivo: %s\n", i++, current.getData(), current, current.getPrev(), current.getNext());
             current = current.getNext();
         }
     }
 
     //controlla se la lista � vuota
-    public boolean isEmpty()
-    {
+    public boolean isEmpty() {
         return head == null;
     }
 
     //svuota la lista
-    public void makeEmpty()
-    {
+    public void makeEmpty() {
         tail = head = now = null;
     }
 
-    public int getSize()
-    {
+    public int getSize() {
         return size;
     }
 }

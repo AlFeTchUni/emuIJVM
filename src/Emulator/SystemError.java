@@ -1,9 +1,7 @@
 package Emulator;
 
-public class SystemError extends RuntimeException
-{
-    public SystemError(String msg)
-    {
+public class SystemError extends RuntimeException {
+    public SystemError(String msg) {
         super(msg);
     }
 }

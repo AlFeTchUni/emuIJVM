@@ -2,34 +2,28 @@ package Assembler;
 
 import java.io.Serializable;
 
-public class Parametro implements Serializable
-{
+public class Parametro implements Serializable {
     //il tipo è 0 = diretto, 1=costante, 2=variabile, 3=etichetta
     private int tipo;
     //il numero di bit del parametro
     private int bytes;
 
-    public Parametro(int _tipo, int _bytes)
-    {
+    public Parametro(int _tipo, int _bytes) {
         tipo = _tipo;
         bytes = _bytes;
     }
 
-    public int getTipo()
-    {
+    public int getTipo() {
         return tipo;
     }
 
-    public int getBytes()
-    {
+    public int getBytes() {
         return bytes;
     }
 
-    public String getTypeName()
-    {
+    public String getTypeName() {
         String toReturn = "";
-        switch (tipo)
-        {
+        switch (tipo) {
             case 0:
                 toReturn = "Direct";
                 break;
@@ -45,8 +39,7 @@ public class Parametro implements Serializable
         return toReturn;
     }
 
-    public String toString()
-    {
+    public String toString() {
         return String.format("Type: %-10s Bytes: %d", getTypeName(), bytes);
     }
 
