@@ -4,8 +4,7 @@ Main1: PC=PC+1; fetch; goto(MBR)
 (0xFF)halt1:;
 halt1:; goto halt1
 
-(0xFD)out1:;
-out1:OPC=H=-1
+(0xFD)out1:OPC=H=-1
 OPC=H+OPC
 MAR=H+OPC           // compute OUT address
 MDR=TOS; wr         // write to output

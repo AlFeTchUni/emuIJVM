@@ -47,6 +47,7 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JMenuItem jMenuItem6;
     private javax.swing.JMenuItem jMenuItem7;
+    private javax.swing.JMenuItem jMenuItem8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel2;
@@ -125,6 +126,7 @@ public class GUI extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
+        jMenuItem8 = new javax.swing.JMenuItem();
         jMenuItem3 = new javax.swing.JMenuItem();
         jMenuItem4 = new javax.swing.JMenuItem();
         jMenuItem5 = new javax.swing.JMenuItem();
@@ -468,6 +470,9 @@ public class GUI extends javax.swing.JFrame {
 
         jMenu1.setText("File");
 
+        jMenuItem8.setText("New Program");
+        jMenu1.add(jMenuItem8);
+
         jMenuItem3.setText("Open Program");
         jMenu1.add(jMenuItem3);
 
@@ -545,6 +550,7 @@ public class GUI extends javax.swing.JFrame {
         jMenuItem1.addActionListener(_toSet);
         jMenuItem2.addActionListener(_toSet);
         jMenuItem3.addActionListener(_toSet);
+        jMenuItem8.addActionListener(_toSet);
         jMenuItem4.addActionListener(_toSet);
         jMenuItem5.addActionListener(_toSet);
         jMenuItem6.addActionListener(_toSet);

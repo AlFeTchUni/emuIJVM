@@ -254,7 +254,7 @@ public class Emulator {
                 opcodeList.setVisible(true);
             } else if (event.getActionCommand().equals("Open Program")) {
                 JFileChooser open = new JFileChooser();
-                FileNameExtensionFilter filter = new FileNameExtensionFilter("Assembly IJVM", "ijvm");
+                FileNameExtensionFilter filter = new FileNameExtensionFilter("Assembly IJVM", "jas");
                 open.setFileFilter(filter);
                 int returnV = open.showOpenDialog(theGUI);
                 if (returnV == JFileChooser.APPROVE_OPTION) {
@@ -271,9 +271,27 @@ public class Emulator {
                                 "System Error", JOptionPane.ERROR_MESSAGE);
                     }
                 }
+            } else if (event.getActionCommand().equals("New Program")) {
+                int option = JOptionPane.NO_OPTION;
+                if (!theGUI.getProgramString().isEmpty())
+                    option = JOptionPane.showConfirmDialog(null, "This action erase your program.\n Do you want to proceed?", "Warning", JOptionPane.YES_NO_OPTION);
+
+                if (option == JOptionPane.YES_OPTION) {
+                    reset = true;
+                    theMachine.reset();
+                    complete();
+                    theGUI.setMethodArea("");
+                    theGUI.setConstantPool("");
+                    theGUI.setOutput("");
+                    theGUI.setProgram("");
+                    theGUI.setStep(false);
+                    theGUI.setStop(false);
+                    theGUI.setStart(false);
+                    theGUI.setReset(false);
+                }
             } else if (event.getActionCommand().equals("Save Program")) {
                 JFileChooser save = new JFileChooser();
-                FileNameExtensionFilter filter = new FileNameExtensionFilter("Assembly IJVM", "ijvm");
+                FileNameExtensionFilter filter = new FileNameExtensionFilter("Assembly IJVM", "jas");
                 save.setFileFilter(filter);
 
                 int returnV = save.showSaveDialog(theGUI);
@@ -352,7 +370,6 @@ public class Emulator {
                         FileInputStream inputF = new FileInputStream("./IJVM/original.mal");
                         FileOutputStream output = new FileOutputStream("./IJVM/microprogram.mal");
                         byte[] in = new byte[inputF.available()];
-                        ;
                         inputF.read(in);
                         output.write(in);
                         inputF.close();
@@ -453,7 +470,6 @@ public class Emulator {
                         FileInputStream inputF = new FileInputStream("./Assembler/original.lst");
                         FileOutputStream output = new FileOutputStream("./Assembler/opcode.lst");
                         byte[] in = new byte[inputF.available()];
-                        ;
                         inputF.read(in);
                         output.write(in);
                         inputF.close();

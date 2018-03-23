@@ -56,14 +56,14 @@ public class Node {
         return prev;
     }
 
-    //modifca prev creando un nuovo Node contenente _object
-    public void setPrev(Object _newDataPrev) {
-        this.setPrev(new Node(_newDataPrev));
-    }
-
     //modifica prev
     public void setPrev(Node _newPrev) {
         prev = _newPrev;
+    }
+
+    //modifca prev creando un nuovo Node contenente _object
+    public void setPrev(Object _newDataPrev) {
+        this.setPrev(new Node(_newDataPrev));
     }
 
     //restituisce l'oggetto object

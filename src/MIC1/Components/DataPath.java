@@ -70,12 +70,8 @@ public class DataPath {
                         OPC = new Binary32(busC.getValue());
                     break;
                 case 2:
-                    if (_code.charAt(i) == '1') {
-                        /*if (TOS.getDecimal() == busC.getDecimal() && _code.equals("001000000"))
-                            System.out.print((char) TOS.getDecimal());*/
+                    if (_code.charAt(i) == '1')
                         TOS = new Binary32(busC.getValue());
-                    }
-
                     break;
                 case 3:
                     if (_code.charAt(i) == '1')
@@ -154,12 +150,12 @@ public class DataPath {
         return MBR;
     }
 
-    public void setMBR(int _value) {
-        MBR = new Binary8(_value);
-    }
-
     public void setMBR(Binary8 _value) {
         MBR = _value;
+    }
+
+    public void setMBR(int _value) {
+        MBR = new Binary8(_value);
     }
 
     public Binary32 getPC() {
@@ -174,12 +170,12 @@ public class DataPath {
         return MDR;
     }
 
-    public void setMDR(Binary32 _value) {
-        MDR = _value;
-    }
-
     public void setMDR(int _value) {
         MDR = new Binary32(_value);
+    }
+
+    public void setMDR(Binary32 _value) {
+        MDR = _value;
     }
 
     public Binary32 getMAR() {
