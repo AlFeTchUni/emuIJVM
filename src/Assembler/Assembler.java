@@ -15,6 +15,7 @@ import java.io.EOFException;
 import java.io.IOException;
 import java.io.FileOutputStream;
 import java.io.ObjectOutputStream;
+import java.math.BigInteger;
 
 import Emulator.SystemError;
 
@@ -423,6 +424,7 @@ public class Assembler
                 {
                     Parametro nowP = now.getParametro(j);
                     ListDL simboli = theMethod.getSimboli();
+                    boolean isHex = false;
                     switch (nowP.getTipo())
                     {
 
@@ -430,7 +432,17 @@ public class Assembler
                         case 0:
                             try
                             {
-                                Integer.parseInt(opcodeLine[j + (now.isLarge() ? 2 : 1)]);
+                                String param = opcodeLine[j + (now.isLarge() ? 2 : 1)];
+                                if(param.startsWith("0x"))
+                                {
+                                    String hex = param.split("0x")[1];
+                                    BigInteger bi = new BigInteger(hex, 16);
+                                    isHex = true;
+                                }
+                                else {
+                                    Integer.parseInt(param);
+                                    isHex = false;
+                                }
                             } catch (NumberFormatException e)
                             {
                                 throw new TranslationError(opcodeLine[j + (now.isLarge() ? 2 : 1)] +
@@ -464,7 +476,13 @@ public class Assembler
                             //-1 sta per non risolto
                             break;
                     }
-                    parametersInstr.insertTail(opcodeLine[j + (now.isLarge() ? 2 : 1)]);
+                    if(isHex) {
+                        String hex = (opcodeLine[j + (now.isLarge() ? 2 : 1)]).split("0x")[1];
+                        BigInteger bi = new BigInteger(hex, 16);
+                        parametersInstr.insertTail(bi.toString());
+                    } else {
+                        parametersInstr.insertTail(opcodeLine[j + (now.isLarge() ? 2 : 1)]);
+                    }
                 }
                 //inserisco l'istruzione con gli indirizzi risolti nel method
                 theMethod.insertInstruction(new FirstStepInstr(lastByte, length, now, parametersInstr));
