@@ -101,7 +101,14 @@ public class Assembler {
                     if (nameP.length() != 0)
                         throw new TranslationError("Constant's name not permitted: \n" + name + "\non line: " + (j + 1));
                     try {
-                        value = Integer.parseInt(constant[1]);
+                        if (constant[1].startsWith("0x")) {
+							String hex = constant[1].split("0x")[1];
+							BigInteger bi = new BigInteger(hex, 16);
+							value = bi.intValue();
+						}
+						else {
+							value = Integer.parseInt(constant[1]);
+						}
                     } catch (NumberFormatException e) {
                         throw new TranslationError(constant[1] + " is NaN on line: " + (j + 1));
                     }
