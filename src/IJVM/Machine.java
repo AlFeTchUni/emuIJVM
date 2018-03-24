@@ -198,6 +198,10 @@ public class Machine {
         return mic1.getStop() == getPC() - 1;
     }
 
+    public void setStdin(int stdin) {
+        mic1.getMemory().wr(new Binary32(-4), new Binary32(stdin));
+    }
+
     //resetta la macchina
     public void reset() {
         mic1.setRegister("PC", ((int) Math.pow(2, 16)) * 4);

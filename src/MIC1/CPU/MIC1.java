@@ -128,10 +128,9 @@ public class MIC1 implements Runnable {
                 if (mir.getInstruction().charAt(29) == '1') {
                     toWrite.enqueue(new toWriteData(new Binary32(dataPath.getMAR().getValue()),
                             new Binary32(dataPath.getMDR().getValue())));
-                    if (new Binary32(dataPath.getMAR().getValue()).getDecimal() == -3)//TODO Forse non è sempre -3
+                    if (new Binary32(dataPath.getMAR().getValue()).getDecimal() == -3)
                     {
                         toAdvise.getTheGUI().appendStdout("" + (char) new Binary32(dataPath.getMDR().getValue()).getDecimal());
-                        System.out.print((char) new Binary32(dataPath.getMDR().getValue()).getDecimal());
                     }
                 }
                 //delayed rd operation

@@ -20,6 +20,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
+import java.math.BigInteger;
 import java.util.Scanner;
 
 public class Emulator {
@@ -63,6 +64,7 @@ public class Emulator {
         theGUI.setResetHandler(new resetHandler());
         theGUI.setHexBinaryHandler(new hexBinHandler());
         theGUI.setStepHandler(new stepHandler());
+        theGUI.setSetStdinBtn(new stdinHandler());
         theGUI.setMenuHandler(new menuHandler());
         theGUI.setStart(false);
         theGUI.setStop(false);
@@ -217,6 +219,28 @@ public class Emulator {
                 theGUI.setHex(false);
                 theGUI.setMethodArea("Addr    |Content\n" + theMachine.getMethodArea(false));
             }
+        }
+    }
+
+    //il gestore per l'stdin
+    private class stdinHandler implements ActionListener {
+        public void actionPerformed(ActionEvent event) {
+            int stdinValue;
+            String stdin = theGUI.getStdinString();
+            try
+            {
+                if (stdin.startsWith("0x")) {
+                    String hex = stdin.split("0x")[1];
+                    BigInteger bi = new BigInteger(hex, 16);
+                    stdinValue = bi.intValue();
+                } else {
+                    stdinValue = Integer.parseInt(stdin);
+                }
+                theMachine.setStdin(stdinValue);
+            } catch (NumberFormatException e) {
+				throw new TranslationError("STDIN is NaN");
+			}
+
         }
     }
 
