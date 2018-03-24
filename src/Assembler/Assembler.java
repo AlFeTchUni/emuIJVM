@@ -80,8 +80,7 @@ public class Assembler {
         constantsTable.insertTail(new Constant("objref", 0));
         //pulisco tutte le righe di istruzioni dagli spazi in eccesso
         for (int i = 0; i < _toTranslate.length; i++) {
-            _toTranslate[i] = _toTranslate[i].replaceAll(" +", " ");
-            _toTranslate[i] = _toTranslate[i].replaceAll("\t", " ");
+			_toTranslate[i] = _toTranslate[i].replaceAll("\\s+", " ");
         }
         //cerco le costanti
         if (_toTranslate[0].contains(".constant")) {
