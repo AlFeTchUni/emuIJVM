@@ -66,8 +66,8 @@ public class Assembler {
                         System.out.println(_toTranslate[j] + j);
                         toTrN[k++] = _toTranslate[j];
                     }
-                i--;
-                _toTranslate = toTrN;
+                /*i--;
+                _toTranslate = toTrN;*/
             }
         }
         System.out.println("-----ASSEMBLER STANDARD OUTPUT-----");
@@ -80,7 +80,7 @@ public class Assembler {
         constantsTable.insertTail(new Constant("objref", 0));
         //pulisco tutte le righe di istruzioni dagli spazi in eccesso
         for (int i = 0; i < _toTranslate.length; i++) {
-			_toTranslate[i] = _toTranslate[i].replaceAll("\\s+", " ");
+            _toTranslate[i] = _toTranslate[i].replaceAll("\\s+", " ");
         }
         //cerco le costanti
         if (_toTranslate[0].contains(".constant")) {
@@ -101,15 +101,16 @@ public class Assembler {
                         throw new TranslationError("Constant's name not permitted: \n" + name + "\non line: " + (j + 1));
                     try {
                         if (constant[1].startsWith("0x")) {
-							String hex = constant[1].split("0x")[1];
-							BigInteger bi = new BigInteger(hex, 16);
-							value = bi.intValue();
-						}
-						else {
-							value = Integer.parseInt(constant[1]);
-						}
+                            String hex = constant[1].split("0x")[1];
+                            BigInteger bi = new BigInteger(hex, 16);
+                            value = bi.intValue();
+                        } else {
+                            value = Integer.parseInt(constant[1]);
+                        }
                     } catch (NumberFormatException e) {
                         throw new TranslationError(constant[1] + " is NaN on line: " + (j + 1));
+                    } catch (IndexOutOfBoundsException e) {
+                        throw new TranslationError("Invalid Hex number on line: " + (j + 1));
                     }
                     constantsTable.insertTail(new Constant(name, value));
                     _toTranslate[j] = null;
@@ -296,7 +297,7 @@ public class Assembler {
                                     "\n on line " + (methodInit + i));
                     localVars.rewind();
                     while (localVars.hasNext())
-                        if (((String) localVars.next()).equals(_instrunctions[i]))
+                        if (localVars.next().equals(_instrunctions[i]))
                             throw new TranslationError("Variable already defined:\n" +
                                     _instrunctions[i] + " \nmethod: " + nomeMetodo +
                                     "\non line " + (methodInit + i));
@@ -344,6 +345,10 @@ public class Assembler {
                                 "\nmethod: " + nomeMetodo +
                                 "\non line: " + (methodInit + i));
                     _instrunctions[i] = _instrunctions[i].substring(_instrunctions[i].indexOf(':') + 1);
+                    if (_instrunctions[i].isEmpty()) {
+                        i++;
+                        continue;
+                    }
                     _instrunctions[i] = purge(_instrunctions[i]);
                     //cerco un'etichetta con lo stesso nome
                     ListDL labelList = theMethod.getLabels();
@@ -358,6 +363,10 @@ public class Assembler {
                 //cerco l'opcode tra quelli che sono presenti nella lista
                 String[] opcodeLine = _instrunctions[i].split(" ");
                 String opcodeName = opcodeLine[0];
+                if (opcodeName.isEmpty()) {
+                    i++;
+                    continue;
+                }
                 Opcode now = getOpcode(opcodeName);
                 if (now == null) {
                     //provo a cercare l'opcode formato da due parole
@@ -409,6 +418,8 @@ public class Assembler {
                             } catch (NumberFormatException e) {
                                 throw new TranslationError(opcodeLine[j + (now.isLarge() ? 2 : 1)] +
                                         " is NaN\nmethod: " + nomeMetodo + "+\non line: " + (methodInit + i));
+                            } catch (IndexOutOfBoundsException e) {
+                                throw new TranslationError("Invalid Hex number on line: " + (methodInit + i));
                             }
                             break;
                         //caso costante inesistente

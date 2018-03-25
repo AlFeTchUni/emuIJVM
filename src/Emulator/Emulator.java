@@ -227,8 +227,7 @@ public class Emulator {
         public void actionPerformed(ActionEvent event) {
             int stdinValue;
             String stdin = theGUI.getStdinString();
-            try
-            {
+            try {
                 if (stdin.startsWith("0x")) {
                     String hex = stdin.split("0x")[1];
                     BigInteger bi = new BigInteger(hex, 16);
@@ -238,8 +237,8 @@ public class Emulator {
                 }
                 theMachine.setStdin(stdinValue);
             } catch (NumberFormatException e) {
-				throw new TranslationError("STDIN is NaN");
-			}
+                throw new TranslationError("STDIN is NaN");
+            }
 
         }
     }

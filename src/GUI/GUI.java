@@ -28,7 +28,7 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JButton Start;
     private javax.swing.JButton Step;
     private javax.swing.JButton Stop;
-	private javax.swing.JButton setStdinBtn;
+    private javax.swing.JButton setStdinBtn;
     private javax.swing.JTextField TOS;
     private javax.swing.JRadioButton binary;
     private javax.swing.JTextArea contants;
@@ -73,7 +73,7 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JTextArea prgram;
     private javax.swing.JTextField running;
     private javax.swing.JTextArea stdout;
-	private javax.swing.JTextArea stdin;
+    private javax.swing.JTextArea stdin;
     private Stack stack;
     private javax.swing.JButton translate;
 
@@ -99,14 +99,14 @@ public class GUI extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         jPanel5 = new javax.swing.JPanel();
         jPanel12 = new javax.swing.JPanel();
-		jScrollPane1 = new javax.swing.JScrollPane();
-		stdin = new javax.swing.JTextArea();
-		setStdinBtn = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        stdin = new javax.swing.JTextArea();
+        setStdinBtn = new javax.swing.JButton();
         stdout = new javax.swing.JTextArea();
         prgram = new javax.swing.JTextArea();
         jPanel6 = new javax.swing.JPanel();
         jPanel11 = new javax.swing.JPanel();
-		jPanel13 = new javax.swing.JPanel();
+        jPanel13 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         output = new javax.swing.JTextArea();
         jPanel7 = new javax.swing.JPanel();
@@ -179,42 +179,41 @@ public class GUI extends javax.swing.JFrame {
         );
 
 
-		jPanel13.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), "Standard Input"));
+        jPanel13.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), "Standard Input"));
 
-		stdin.setBackground(new java.awt.Color(0, 0, 0));
-		stdin.setFont(new java.awt.Font("DejaVu Sans", 0, 14));
-		stdin.setForeground(new java.awt.Color(255, 255, 255));
-		stdin.setTabSize(5);
-		stdin.setEditable(true);
-		stdin.setRows(1);
-		stdin.setToolTipText("Your Program Input");
-		stdin.setCaretColor(new java.awt.Color(255, 255, 255));
+        stdin.setBackground(new java.awt.Color(0, 0, 0));
+        stdin.setFont(new java.awt.Font("DejaVu Sans", 0, 14));
+        stdin.setForeground(new java.awt.Color(255, 255, 255));
+        stdin.setTabSize(5);
+        stdin.setEditable(true);
+        stdin.setRows(1);
+        stdin.setToolTipText("Your Program Input");
+        stdin.setCaretColor(new java.awt.Color(255, 255, 255));
 
-		setStdinBtn.setText("Set");
-		setStdinBtn.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        setStdinBtn.setText("Set");
+        setStdinBtn.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
-		javax.swing.GroupLayout jPanel13Layout = new javax.swing.GroupLayout(jPanel13);
-		jPanel13.setLayout(jPanel13Layout);
-		jPanel13Layout.setHorizontalGroup(
-				jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-						.addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel13Layout.createSequentialGroup()
-							.addComponent(stdin, javax.swing.GroupLayout.DEFAULT_SIZE, 50, 400-63)
-							.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-							.addComponent(setStdinBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
-		));
-		jPanel13Layout.setVerticalGroup(
-				jPanel13Layout.createParallelGroup(GroupLayout.Alignment.CENTER)
-						.addGroup(jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-						.addComponent(stdin, javax.swing.GroupLayout.DEFAULT_SIZE, 10, Short.MAX_VALUE)
-						.addComponent(setStdinBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
-		));
-
+        javax.swing.GroupLayout jPanel13Layout = new javax.swing.GroupLayout(jPanel13);
+        jPanel13.setLayout(jPanel13Layout);
+        jPanel13Layout.setHorizontalGroup(
+                jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel13Layout.createSequentialGroup()
+                                .addComponent(stdin, javax.swing.GroupLayout.DEFAULT_SIZE, 50, 400 - 63)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(setStdinBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        ));
+        jPanel13Layout.setVerticalGroup(
+                jPanel13Layout.createParallelGroup(GroupLayout.Alignment.CENTER)
+                        .addGroup(jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(stdin, javax.swing.GroupLayout.DEFAULT_SIZE, 10, Short.MAX_VALUE)
+                                .addComponent(setStdinBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        ));
 
 
         javax.swing.GroupLayout jPanel12Layout = new javax.swing.GroupLayout(jPanel12);
         jPanel12.setLayout(jPanel12Layout);
-		jPanel12Layout.setHorizontalGroup(
-				jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        jPanel12Layout.setHorizontalGroup(
+                jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel12Layout.createSequentialGroup()
                                 .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                         .addComponent(jPanel11, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -222,11 +221,11 @@ public class GUI extends javax.swing.JFrame {
                         .addComponent(jPanel13, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGap(0, 0, 0)
         );
-		jPanel12Layout.setVerticalGroup(
-				jPanel12Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+        jPanel12Layout.setVerticalGroup(
+                jPanel12Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                         .addGroup(jPanel12Layout.createSequentialGroup()
                                 .addComponent(jPanel11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jPanel13, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(jPanel13, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         jPanel5.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), "Assembly IJVM Program"));
@@ -240,6 +239,9 @@ public class GUI extends javax.swing.JFrame {
         prgram.setToolTipText("Your Program Here");
         prgram.setCaretColor(new java.awt.Color(255, 255, 255));
         jScrollPane1.setViewportView(prgram);
+        TextLineNumber lineNumber = new TextLineNumber(prgram);
+        prgram.setBorder(BorderFactory.createEmptyBorder(0, 3, 0, 0));
+        jScrollPane1.setRowHeaderView(lineNumber);
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
@@ -680,9 +682,9 @@ public class GUI extends javax.swing.JFrame {
         stdout.setText(toSet);
     }
 
-	public void setStdin(String toSet) {
-		stdin.setText(toSet);
-	}
+    public void setStdin(String toSet) {
+        stdin.setText(toSet);
+    }
 
     public void appendStdout(String toSet) {
         stdout.append(toSet);
@@ -708,9 +710,9 @@ public class GUI extends javax.swing.JFrame {
         return stdout.getText();
     }
 
-	public String getStdinString() {
-		return stdin.getText();
-	}
+    public String getStdinString() {
+        return stdin.getText();
+    }
 
     public void setMethodArea(String toSet) {
         methods.setText(toSet);
