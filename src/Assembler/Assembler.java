@@ -345,10 +345,6 @@ public class Assembler {
                                 "\nmethod: " + nomeMetodo +
                                 "\non line: " + (methodInit + i));
                     _instrunctions[i] = _instrunctions[i].substring(_instrunctions[i].indexOf(':') + 1);
-                    if (_instrunctions[i].isEmpty()) {
-                        i++;
-                        continue;
-                    }
                     _instrunctions[i] = purge(_instrunctions[i]);
                     //cerco un'etichetta con lo stesso nome
                     ListDL labelList = theMethod.getLabels();
