@@ -31,7 +31,7 @@ public class Main extends Application
             primaryStage.setTitle("emuIJVM 2.0");
             primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("icon.png")));
 
-            Scene scene = new Scene(root, 1366, 706);
+            Scene scene = new Scene(root, 1366, 750);
             scene.getStylesheets().add(getClass().getResource("ijvm-keywords.css").toExternalForm());
             scene.getStylesheets().add(getClass().getResource("styles.css").toExternalForm());
             primaryStage.setScene(scene);
