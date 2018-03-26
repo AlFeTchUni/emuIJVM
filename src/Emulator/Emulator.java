@@ -252,6 +252,7 @@ public class Emulator
 		theMachine.step();
 		theGUI.setStop(true);
 		step = true;
+		theGUI.setMemoryTest(theMachine.getMemory());
 	};
 
 	EventHandler<javafx.event.ActionEvent> slowRunHandler = ev -> {

@@ -2,17 +2,24 @@ package GUI;
 
 import Assembler.Opcode;
 import Emulator.Emulator;
+import MIC1.Components.Memory32;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.*;
+import javafx.stage.Stage;
 import org.fxmisc.richtext.CodeArea;
 import org.fxmisc.richtext.LineNumberFactory;
 import org.fxmisc.richtext.model.StyleSpans;
 import org.fxmisc.richtext.model.StyleSpansBuilder;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -129,9 +136,13 @@ public class Controller
 	public Button slowRunBtn;
 	@FXML
 	public Button stopSlowRunBtn;
+	@FXML
+	public Button showMemoryBtn;
 
 	private int registerBuffer = 0;
 	private Stack stack;
+
+	private MemoryController memoryController;
 
 	@FXML
 	public void initialize()
@@ -153,16 +164,39 @@ public class Controller
 
 		sleepTxt.textProperty().addListener(ev ->
 		{
-			try {
+			try
+			{
 				sleepSlider.setValue(Integer.parseInt(sleepTxt.getText()));
-			} catch (NumberFormatException e) {
+			} catch (NumberFormatException e)
+			{
 				sleepSlider.setValue(0);
 				sleepTxt.setText("0");
 			}
 
 		});
 
+		showMemoryBtn.setOnAction(event->{
+			Parent root;
+			try {
+				FXMLLoader loader = new FXMLLoader(getClass().getResource("../memory.fxml"));
+				root = loader.load();
+				memoryController = loader.getController();
+				Stage stage = new Stage();
+				stage.setTitle("Memory View");
+				stage.setScene(new Scene(root, 450, 450));
+				stage.show();
+			}
+			catch (IOException e) {
+				e.printStackTrace();
+			}
+		});
+
 		Emulator myEm = new Emulator(this);
+	}
+
+	public void setMemoryTest(Memory32 memory)
+	{
+		memoryController.setMemory(memory);
 	}
 
 	public void setSlowRunBtnHandler(EventHandler<ActionEvent> _toSet)
@@ -266,7 +300,7 @@ public class Controller
 
 	public void appendStdout(String toSet)
 	{
-		Platform.runLater(()->
+		Platform.runLater(() ->
 		{
 			stdoutTxt.appendText(toSet);
 		});
@@ -319,7 +353,7 @@ public class Controller
 
 	public void setSP(int toSet)
 	{
-		Platform.runLater(()->
+		Platform.runLater(() ->
 		{
 			SPTxt.setText((new Integer(toSet)).toString());
 		});
@@ -327,7 +361,7 @@ public class Controller
 
 	public void setLV(int toSet)
 	{
-		Platform.runLater(()->
+		Platform.runLater(() ->
 		{
 			LVTxt.setText((new Integer(toSet)).toString());
 		});
@@ -335,7 +369,7 @@ public class Controller
 
 	public void setPC(int toSet)
 	{
-		Platform.runLater(()->
+		Platform.runLater(() ->
 		{
 			PCTxt.setText((new Integer(toSet)).toString());
 		});
@@ -343,7 +377,7 @@ public class Controller
 
 	public void setRunning(boolean toSet)
 	{
-		Platform.runLater(()->
+		Platform.runLater(() ->
 		{
 			isRunningTxt.setText(toSet ? "true" : "false");
 		});
@@ -351,7 +385,7 @@ public class Controller
 
 	public void setTOS(int toSet)
 	{
-		Platform.runLater(()->
+		Platform.runLater(() ->
 		{
 			TOSTxt.setText((new Integer(toSet)).toString());
 		});
@@ -359,7 +393,7 @@ public class Controller
 
 	public void printRegisters(int _numRegistri)
 	{
-		Platform.runLater(()->
+		Platform.runLater(() ->
 		{
 			registerBuffer = registerBuffer + _numRegistri;
 			if (_numRegistri > 0)
@@ -371,7 +405,7 @@ public class Controller
 
 	public void deleteRegisters(int _numRegistri)
 	{
-		Platform.runLater(()->
+		Platform.runLater(() ->
 		{
 			registerBuffer = registerBuffer - _numRegistri;
 			for (int i = 0; i < _numRegistri; i++)
@@ -382,7 +416,7 @@ public class Controller
 
 	public void stackError()
 	{
-		Platform.runLater(()->
+		Platform.runLater(() ->
 		{
 			stack.error();
 			stack.paintComponent(stackCanvas.getGraphicsContext2D());
@@ -392,7 +426,7 @@ public class Controller
 
 	public void setStackValues(int[] toSet)
 	{
-		Platform.runLater(()->
+		Platform.runLater(() ->
 		{
 			stackCanvas.getGraphicsContext2D().clearRect(0, 0, stackCanvas.getWidth(), stackCanvas.getHeight());
 			stack.setStackValues(toSet);
@@ -402,7 +436,7 @@ public class Controller
 
 	public void refreshStack()
 	{
-		Platform.runLater(()->
+		Platform.runLater(() ->
 		{
 			stackCanvas.getGraphicsContext2D().clearRect(0, 0, stackCanvas.getWidth(), stackCanvas.getHeight());
 			stack.paintComponent(stackCanvas.getGraphicsContext2D());

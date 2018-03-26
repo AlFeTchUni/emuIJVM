@@ -156,6 +156,7 @@
                         </AnchorPane>
                     </children>
                 </AnchorPane>
+            <Button fx:id="showMemoryBtn" layoutX="999.0" layoutY="291.0" mnemonicParsing="false" text="Button" />
 
             </children>
         </AnchorPane>

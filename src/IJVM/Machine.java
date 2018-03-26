@@ -219,6 +219,10 @@ public class Machine {
         System.out.println(mic1.getMemory());
     }
 
+    public Memory32 getMemory() {
+        return mic1.getMemory();
+    }
+
     public void setFirstInstrunction(String _instr) {
         firstInstr = _instr;
     }
