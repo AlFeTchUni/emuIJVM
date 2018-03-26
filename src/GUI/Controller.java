@@ -153,7 +153,13 @@ public class Controller
 
 		sleepTxt.textProperty().addListener(ev ->
 		{
-			sleepSlider.setValue(Integer.parseInt(sleepTxt.getText()));
+			try {
+				sleepSlider.setValue(Integer.parseInt(sleepTxt.getText()));
+			} catch (NumberFormatException e) {
+				sleepSlider.setValue(0);
+				sleepTxt.setText("0");
+			}
+
 		});
 
 		Emulator myEm = new Emulator(this);
