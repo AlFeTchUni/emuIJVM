@@ -15,7 +15,7 @@
 <?import org.fxmisc.flowless.VirtualizedScrollPane?>
 <?import org.fxmisc.richtext.CodeArea?>
 
-<VBox prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.Controller">
+<VBox prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/9.0.4" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.Controller">
     <children>
         <MenuBar VBox.vgrow="NEVER">
             <menus>
@@ -76,7 +76,7 @@
                                 <TextField fx:id="SPTxt" layoutX="104.0" layoutY="75.0" AnchorPane.topAnchor="72.0" />
                                 <TextField fx:id="LVTxt" layoutX="104.0" layoutY="100.0" AnchorPane.topAnchor="101.0" />
                                 <TextField fx:id="PCTxt" layoutX="104.0" layoutY="126.0" AnchorPane.topAnchor="130.0" />
-                                <Label layoutX="43.0" layoutY="18.0" text="Is running" />
+                                <Label layoutX="36.0" layoutY="19.0" text="Is running" />
                                 <Label layoutX="74.0" layoutY="47.0" text="TOS" />
                                 <Label layoutX="78.0" layoutY="76.0" text="SP" />
                                 <Label layoutX="78.0" layoutY="105.0" text="LV" />
@@ -91,10 +91,10 @@
                         <AnchorPane prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="1.0" AnchorPane.leftAnchor="1.0" AnchorPane.rightAnchor="1.0" AnchorPane.topAnchor="10.0">
                             <children>
                                 <Button fx:id="translateBtn" layoutY="2.0" mnemonicParsing="false" text="Translate &amp; Load" AnchorPane.leftAnchor="6.0" AnchorPane.topAnchor="6.0" />
-                                <Button fx:id="stopBtn" layoutX="191.0" layoutY="6.0" mnemonicParsing="false" text="Stop" />
-                                <Button fx:id="startBtn" layoutX="132.0" layoutY="6.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="45.0" text="Start" />
-                                <Button fx:id="resetBtn" layoutX="133.0" layoutY="40.0" mnemonicParsing="false" text="Reset" />
-                                <Button fx:id="stepBtn" layoutX="191.0" layoutY="40.0" mnemonicParsing="false" text="Step" />
+                                <Button fx:id="stopBtn" layoutX="213.0" layoutY="6.0" mnemonicParsing="false" text="Stop" />
+                                <Button fx:id="startBtn" layoutX="154.0" layoutY="6.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="55.0" text="Start" />
+                                <Button fx:id="resetBtn" layoutX="155.0" layoutY="40.0" mnemonicParsing="false" text="Reset" />
+                                <Button fx:id="stepBtn" layoutX="213.0" layoutY="40.0" mnemonicParsing="false" text="Step" />
                                 <Slider fx:id="sleepSlider" layoutX="14.0" layoutY="79.0" max="5000.0" prefHeight="14.0" prefWidth="217.0" />
                                 <TextField fx:id="sleepTxt" layoutX="244.0" layoutY="74.0" prefHeight="25.0" prefWidth="53.0" />
                                 <Button fx:id="slowRunBtn" layoutX="14.0" layoutY="99.0" mnemonicParsing="false" text="Slow Run" />
