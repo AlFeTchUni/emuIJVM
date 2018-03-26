@@ -25,6 +25,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
 import java.math.BigInteger;
+import java.util.Arrays;
 import java.util.Optional;
 import java.util.Scanner;
 
@@ -87,8 +88,7 @@ public class Emulator
 		theGUI.setStep(false);
 		theGUI.setReset(false);
 		theGUI.setBinary(true);
-		//rendo visibile la GUI
-		//theGUI.setVisible(true);
+		theGUI.setOpCodeList(theAssembler.getOpcodeList());
 	}
 
 	public Controller getTheGUI()

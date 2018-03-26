@@ -1,5 +1,6 @@
 package GUI;
 
+import Assembler.Opcode;
 import Emulator.Emulator;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -12,6 +13,7 @@ import org.fxmisc.richtext.LineNumberFactory;
 import org.fxmisc.richtext.model.StyleSpans;
 import org.fxmisc.richtext.model.StyleSpansBuilder;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.regex.Matcher;
@@ -23,21 +25,19 @@ public class Controller
 			"BIPUSH", "DUP", "GOTO", "IADD", "IAND", "IFEQ", "IFLT", "IF_ICMPEQ", "IINC", "ILOAD", "INVOKEVIRTUAL", "IOR", "IRETURN", "ISTORE", "ISUB", "LDC_W", "NOP", "POP", "SWAP", "WIDE ILOAD", "WIDE ISTORE", "OUT", "HALT", "IN"
 	};
 
-	private static final String KEYWORD_PATTERN = "\\b(" + String.join("|", KEYWORDS) + ")\\b";
-	private static final String COMMENT_PATTERN = "//[^\n]*" + "|" + "/\\*(.|\\R)*?\\*/";
-	private static final String LABEL_PATTERN = "(.)*:";
-	private static final String DECLARATION_PATTERN = "\\.(.*)";
+	private String KEYWORD_PATTERN = "\\b(" + String.join("|", KEYWORDS) + ")\\b";
+	private String COMMENT_PATTERN = "//[^\n]*" + "|" + "/\\*(.|\\R)*?\\*/";
+	private String LABEL_PATTERN = "(.)*:";
+	private String DECLARATION_PATTERN = "\\.(.*)";
 
-	private static final Pattern PATTERN = Pattern.compile(
+	private Pattern PATTERN = Pattern.compile(
 			"(?<KEYWORD>" + KEYWORD_PATTERN + ")"
 					+ "|(?<COMMENT>" + COMMENT_PATTERN + ")"
 					+ "|(?<LABEL>" + LABEL_PATTERN + ")"
 					+ "|(?<DECLARATION>" + DECLARATION_PATTERN + ")"
-
-
 	);
 
-	private static StyleSpans<Collection<String>> computeHighlighting(String text)
+	private StyleSpans<Collection<String>> computeHighlighting(String text)
 	{
 		Matcher matcher = PATTERN.matcher(text);
 		int lastKwEnd = 0;
@@ -410,4 +410,19 @@ public class Controller
 
 	}
 
+	public void setOpCodeList(Opcode[] opCodeList)
+	{
+		ArrayList<String> keywords = new ArrayList<>();
+		for (Opcode o : opCodeList)
+		{
+			keywords.add(o.getOpcode());
+		}
+		KEYWORD_PATTERN = "\\b(" + String.join("|", keywords.toArray(new String[keywords.size()])) + ")\\b";
+		PATTERN = Pattern.compile(
+				"(?<KEYWORD>" + KEYWORD_PATTERN + ")"
+						+ "|(?<COMMENT>" + COMMENT_PATTERN + ")"
+						+ "|(?<LABEL>" + LABEL_PATTERN + ")"
+						+ "|(?<DECLARATION>" + DECLARATION_PATTERN + ")"
+		);
+	}
 }
