@@ -15,7 +15,7 @@
 <?import org.fxmisc.flowless.VirtualizedScrollPane?>
 <?import org.fxmisc.richtext.CodeArea?>
 
-<VBox prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/9.0.4" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.Controller">
+<VBox prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.Controller">
     <children>
         <MenuBar VBox.vgrow="NEVER">
             <menus>
@@ -71,11 +71,11 @@
                         <Label alignment="TOP_LEFT" layoutX="14.0" style="-fx-padding: 0 5; -fx-background-color: inherit;" text="Mic-1 Status" />
                         <AnchorPane prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="1.0" AnchorPane.leftAnchor="1.0" AnchorPane.rightAnchor="1.0" AnchorPane.topAnchor="10.0">
                             <children>
-                                <TextField fx:id="isRunningTxt" layoutX="104.0" layoutY="14.0" AnchorPane.topAnchor="14.0" />
-                                <TextField fx:id="TOSTxt" layoutX="104.0" layoutY="50.0" AnchorPane.topAnchor="43.0" />
-                                <TextField fx:id="SPTxt" layoutX="104.0" layoutY="75.0" AnchorPane.topAnchor="72.0" />
-                                <TextField fx:id="LVTxt" layoutX="104.0" layoutY="100.0" AnchorPane.topAnchor="101.0" />
-                                <TextField fx:id="PCTxt" layoutX="104.0" layoutY="126.0" AnchorPane.topAnchor="130.0" />
+                                <TextField fx:id="isRunningTxt" editable="false" layoutX="104.0" layoutY="14.0" AnchorPane.topAnchor="14.0" />
+                                <TextField fx:id="TOSTxt" editable="false" layoutX="104.0" layoutY="50.0" AnchorPane.topAnchor="43.0" />
+                                <TextField fx:id="SPTxt" editable="false" layoutX="104.0" layoutY="75.0" AnchorPane.topAnchor="72.0" />
+                                <TextField fx:id="LVTxt" editable="false" layoutX="104.0" layoutY="100.0" AnchorPane.topAnchor="101.0" />
+                                <TextField fx:id="PCTxt" editable="false" layoutX="104.0" layoutY="126.0" AnchorPane.topAnchor="130.0" />
                                 <Label layoutX="36.0" layoutY="19.0" text="Is running" />
                                 <Label layoutX="74.0" layoutY="47.0" text="TOS" />
                                 <Label layoutX="78.0" layoutY="76.0" text="SP" />
