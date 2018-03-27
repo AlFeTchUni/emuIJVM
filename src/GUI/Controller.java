@@ -21,6 +21,7 @@ import org.fxmisc.richtext.model.StyleSpansBuilder;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.regex.Matcher;
@@ -70,7 +71,7 @@ public class Controller
 	}
 
 	@FXML
-	private CodeArea programTxt;
+	private MyCodeArea programTxt;
 	@FXML
 	private Canvas stackCanvas;
 	@FXML
@@ -155,6 +156,10 @@ public class Controller
 					programTxt.setStyleSpans(0, computeHighlighting(programTxt.getText()));
 				});
 		programTxt.setId("programArea");
+
+		programTxt.getEntries().addAll(Arrays.asList(KEYWORDS));//TODO da aggiornare in esecuzione
+		programTxt.getEntries().addAll(Arrays.asList(".var", ".constant", ".main"));
+
 		stack = new Stack();
 
 		sleepSlider.valueProperty().addListener(ev ->
