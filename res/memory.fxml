@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.RadioButton?>
-<?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.*?>
 <?import javafx.scene.layout.AnchorPane?>
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+            minWidth="-Infinity"
+            prefHeight="722.0" prefWidth="580.0" xmlns="http://javafx.com/javafx/9.0.4"
+            fx:controller="GUI.MemoryController">
+    <children>
+        <TableView fx:id="memoryTableView" layoutX="13.0" layoutY="40.0" prefHeight="642.0" prefWidth="554.0">
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="722.0" prefWidth="580.0" xmlns="http://javafx.com/javafx/9.0.4" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.MemoryController">
-   <children>
-      <TableView fx:id="memoryTableView" layoutX="13.0" layoutY="40.0" prefHeight="642.0" prefWidth="554.0">
-
-      </TableView>
-      <RadioButton fx:id="hexRadio" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" text="Hex" />
-      <RadioButton fx:id="binRadio" layoutX="70.0" layoutY="14.0" mnemonicParsing="false" text="Bin" />
-      <RadioButton fx:id="decRadio" layoutX="122.0" layoutY="14.0" mnemonicParsing="false" text="Dec" />
-      <TextField fx:id="gotoAddressTxt" layoutX="13.0" layoutY="687.0" />
-      <Button fx:id="goBtn" layoutX="192.0" layoutY="687.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="122.0" text="GO" />
-   </children>
+        </TableView>
+        <RadioButton fx:id="hexRadio" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" text="Hex"/>
+        <RadioButton fx:id="binRadio" layoutX="70.0" layoutY="14.0" mnemonicParsing="false" text="Bin"/>
+        <RadioButton fx:id="decRadio" layoutX="122.0" layoutY="14.0" mnemonicParsing="false" text="Dec"/>
+        <TextField fx:id="gotoAddressTxt" layoutX="13.0" layoutY="687.0"/>
+        <Button fx:id="goBtn" layoutX="192.0" layoutY="687.0" mnemonicParsing="false" prefHeight="26.0"
+                prefWidth="122.0" text="GO"/>
+    </children>
 </AnchorPane>

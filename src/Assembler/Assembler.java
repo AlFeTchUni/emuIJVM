@@ -195,7 +195,7 @@ public class Assembler {
                     }
                     nowMethod[index] = _toTranslate[i];
                     _toTranslate[i] = null;
-                } else if(_toTranslate[i].isEmpty())
+                } else if (_toTranslate[i].isEmpty())
                     continue;
                 else
                     throw new TranslationError("Unknown instrunction:\n" + _toTranslate[i] + "\non line: " + i);

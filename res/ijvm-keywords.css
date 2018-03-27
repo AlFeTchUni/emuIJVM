@@ -2,15 +2,19 @@
     -fx-fill: purple;
     -fx-font-weight: bold;
 }
+
 .comment {
-     -fx-fill: cadetblue;
- }
+    -fx-fill: cadetblue;
+}
+
 .label {
-	-fx-fill: blue;
+    -fx-fill: blue;
 }
+
 .declaration {
-	-fx-fill: #ff9500;
+    -fx-fill: #ff9500;
 }
+
 /*
 .semicolon {
     -fx-font-weight: bold;

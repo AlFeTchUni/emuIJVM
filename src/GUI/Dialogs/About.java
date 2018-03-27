@@ -7,9 +7,9 @@
 package GUI.Dialogs;
 
 import java.awt.*;
-import java.io.File;
 import java.io.IOException;
-import java.util.Scanner;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 /**
  * @author dariospy
@@ -38,14 +38,10 @@ public class About extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
         try {
-            File theFile = new File("license.txt");
-            Scanner input = new Scanner(theFile);
-            String license = "";
-            while (input.hasNext())
-                license += input.nextLine() + "\n";
-            jTextArea1.setText(license);
+            jTextArea1.setText(new String(Files.readAllBytes(Paths.get("license.txt"))));
             jTextArea1.setCaretPosition(0);
         } catch (IOException e) {
+            e.printStackTrace();
         }
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         setLocation((int) ((dim.getWidth() - this.getWidth()) / 2),

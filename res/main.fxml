@@ -1,163 +1,230 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.canvas.Canvas?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.Menu?>
-<?import javafx.scene.control.MenuBar?>
-<?import javafx.scene.control.MenuItem?>
-<?import javafx.scene.control.RadioButton?>
-<?import javafx.scene.control.Slider?>
-<?import javafx.scene.control.TextArea?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.VBox?>
-<?import org.fxmisc.flowless.VirtualizedScrollPane?>
-<?import org.fxmisc.richtext.CodeArea?>
-
 <?import GUI.MyCodeArea?>
-<VBox prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.Controller">
+<?import javafx.scene.canvas.Canvas?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import org.fxmisc.flowless.VirtualizedScrollPane?>
+<VBox xmlns:fx="http://javafx.com/fxml/1" prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/9.0.1"
+      fx:controller="GUI.Controller">
     <children>
         <MenuBar VBox.vgrow="NEVER">
             <menus>
                 <Menu mnemonicParsing="false" text="File">
                     <items>
-                        <MenuItem fx:id="newProgramMenu" mnemonicParsing="false" text="New Program" />
-                        <MenuItem fx:id="openProgramMenu" mnemonicParsing="false" text="Open Program" />
-                        <MenuItem fx:id="saveProgramMenu" mnemonicParsing="false" text="Save Program" />
-                        <MenuItem fx:id="exitMenu" mnemonicParsing="false" text="Exit" />
+                        <MenuItem fx:id="newProgramMenu" mnemonicParsing="false" text="New Program"/>
+                        <MenuItem fx:id="openProgramMenu" mnemonicParsing="false" text="Open Program"/>
+                        <MenuItem fx:id="saveProgramMenu" mnemonicParsing="false" text="Save Program"/>
+                        <MenuItem fx:id="exitMenu" mnemonicParsing="false" text="Exit"/>
                     </items>
                 </Menu>
                 <Menu mnemonicParsing="false" text="Edit">
                     <items>
-                        <MenuItem fx:id="microProgramMenu" mnemonicParsing="false" text="MicroProgram" />
-                        <MenuItem fx:id="opcodeListMenu" mnemonicParsing="false" text="Opcode List" />
+                        <MenuItem fx:id="microProgramMenu" mnemonicParsing="false" text="MicroProgram"/>
+                        <MenuItem fx:id="opcodeListMenu" mnemonicParsing="false" text="Opcode List"/>
                     </items>
                 </Menu>
                 <Menu mnemonicParsing="false" text="?">
                     <items>
-                        <MenuItem fx:id="aboutMenu" mnemonicParsing="false" text="About" />
+                        <MenuItem fx:id="aboutMenu" mnemonicParsing="false" text="About"/>
                     </items>
                 </Menu>
             </menus>
         </MenuBar>
-        <AnchorPane fx:id="rootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="719.0" prefWidth="1366.0" VBox.vgrow="ALWAYS" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1">
+        <AnchorPane xmlns:fx="http://javafx.com/fxml/1" fx:id="rootPane" maxHeight="-Infinity" maxWidth="-Infinity"
+                    minHeight="-Infinity" minWidth="-Infinity" prefHeight="719.0" prefWidth="1366.0"
+                    VBox.vgrow="ALWAYS" xmlns="http://javafx.com/javafx/9.0.1">
             <children>
-                <AnchorPane layoutX="8.0" prefHeight="412.0" prefWidth="314.0" style="-fx-border-insets: 8 0 0 0; -fx-background-color: #FFFFFF; -fx-border-color: black;" AnchorPane.leftAnchor="8.0" AnchorPane.topAnchor="0.0">
+                <AnchorPane layoutX="8.0" prefHeight="412.0" prefWidth="314.0"
+                            style="-fx-border-insets: 8 0 0 0; -fx-background-color: #FFFFFF; -fx-border-color: black;"
+                            AnchorPane.leftAnchor="8.0" AnchorPane.topAnchor="0.0">
                     <children>
-                        <Label alignment="TOP_LEFT" layoutX="14.0" style="-fx-padding: 0 5; -fx-background-color: inherit;" text="Assembly IJVM Program" />
-                        <AnchorPane prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="1.0" AnchorPane.leftAnchor="1.0" AnchorPane.rightAnchor="1.0" AnchorPane.topAnchor="10.0">
+                        <Label alignment="TOP_LEFT" layoutX="14.0"
+                               style="-fx-padding: 0 5; -fx-background-color: inherit;" text="Assembly IJVM Program"/>
+                        <AnchorPane prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="1.0"
+                                    AnchorPane.leftAnchor="1.0" AnchorPane.rightAnchor="1.0"
+                                    AnchorPane.topAnchor="10.0">
                             <children>
-                                <VirtualizedScrollPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                <VirtualizedScrollPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+                                                       AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                     <content>
-                                        <MyCodeArea fx:id="programTxt" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                        <MyCodeArea fx:id="programTxt" AnchorPane.bottomAnchor="0.0"
+                                                    AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+                                                    AnchorPane.topAnchor="0.0"/>
                                     </content>
                                 </VirtualizedScrollPane>
                             </children>
                         </AnchorPane>
                     </children>
                 </AnchorPane>
-                <AnchorPane layoutX="8.0" layoutY="412.0" prefHeight="106.0" prefWidth="314.0" style="-fx-border-insets: 8 0 0 0; -fx-background-color: #FFFFFF; -fx-border-color: black;" AnchorPane.leftAnchor="8.0" AnchorPane.topAnchor="412.0">
+                <AnchorPane layoutX="8.0" layoutY="412.0" prefHeight="106.0" prefWidth="314.0"
+                            style="-fx-border-insets: 8 0 0 0; -fx-background-color: #FFFFFF; -fx-border-color: black;"
+                            AnchorPane.leftAnchor="8.0" AnchorPane.topAnchor="412.0">
                     <children>
-                        <Label alignment="TOP_LEFT" layoutX="14.0" style="-fx-padding: 0 5; -fx-background-color: inherit;" text="Assembler Output" />
-                        <AnchorPane prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="1.0" AnchorPane.leftAnchor="1.0" AnchorPane.rightAnchor="1.0" AnchorPane.topAnchor="10.0">
+                        <Label alignment="TOP_LEFT" layoutX="14.0"
+                               style="-fx-padding: 0 5; -fx-background-color: inherit;" text="Assembler Output"/>
+                        <AnchorPane prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="1.0"
+                                    AnchorPane.leftAnchor="1.0" AnchorPane.rightAnchor="1.0"
+                                    AnchorPane.topAnchor="10.0">
                             <children>
-                                <TextArea fx:id="assemblerOutputTxt" prefHeight="85.0" prefWidth="310.0" AnchorPane.bottomAnchor="1.0" AnchorPane.leftAnchor="1.0" AnchorPane.rightAnchor="1.0" AnchorPane.topAnchor="1.0" />
+                                <TextArea fx:id="assemblerOutputTxt" prefHeight="85.0" prefWidth="310.0"
+                                          AnchorPane.bottomAnchor="1.0" AnchorPane.leftAnchor="1.0"
+                                          AnchorPane.rightAnchor="1.0" AnchorPane.topAnchor="1.0"/>
                             </children>
                         </AnchorPane>
                     </children>
                 </AnchorPane>
-                <AnchorPane layoutX="631.0" prefHeight="221.0" prefWidth="360.0" style="-fx-border-insets: 8 0 0 0; -fx-background-color: #FFFFFF; -fx-border-color: black;">
+                <AnchorPane layoutX="631.0" prefHeight="221.0" prefWidth="360.0"
+                            style="-fx-border-insets: 8 0 0 0; -fx-background-color: #FFFFFF; -fx-border-color: black;">
                     <children>
-                        <Label alignment="TOP_LEFT" layoutX="14.0" style="-fx-padding: 0 5; -fx-background-color: inherit;" text="Mic-1 Status" />
-                        <AnchorPane prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="1.0" AnchorPane.leftAnchor="1.0" AnchorPane.rightAnchor="1.0" AnchorPane.topAnchor="10.0">
+                        <Label alignment="TOP_LEFT" layoutX="14.0"
+                               style="-fx-padding: 0 5; -fx-background-color: inherit;" text="Mic-1 Status"/>
+                        <AnchorPane prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="1.0"
+                                    AnchorPane.leftAnchor="1.0" AnchorPane.rightAnchor="1.0"
+                                    AnchorPane.topAnchor="10.0">
                             <children>
-                                <TextField fx:id="isRunningTxt" editable="false" layoutX="104.0" layoutY="14.0" AnchorPane.topAnchor="14.0" />
-                                <TextField fx:id="TOSTxt" editable="false" layoutX="104.0" layoutY="50.0" AnchorPane.topAnchor="43.0" />
-                                <TextField fx:id="SPTxt" editable="false" layoutX="104.0" layoutY="75.0" AnchorPane.topAnchor="72.0" />
-                                <TextField fx:id="LVTxt" editable="false" layoutX="104.0" layoutY="100.0" AnchorPane.topAnchor="101.0" />
-                                <TextField fx:id="PCTxt" editable="false" layoutX="104.0" layoutY="126.0" AnchorPane.topAnchor="130.0" />
-                                <Label layoutX="36.0" layoutY="19.0" text="Is running" />
-                                <Label layoutX="74.0" layoutY="47.0" text="TOS" />
-                                <Label layoutX="78.0" layoutY="76.0" text="SP" />
-                                <Label layoutX="78.0" layoutY="105.0" text="LV" />
-                                <Label layoutX="78.0" layoutY="134.0" text="PC" />
+                                <TextField fx:id="isRunningTxt" editable="false" layoutX="104.0" layoutY="14.0"
+                                           AnchorPane.topAnchor="14.0"/>
+                                <TextField fx:id="TOSTxt" editable="false" layoutX="104.0" layoutY="50.0"
+                                           AnchorPane.topAnchor="43.0"/>
+                                <TextField fx:id="SPTxt" editable="false" layoutX="104.0" layoutY="75.0"
+                                           AnchorPane.topAnchor="72.0"/>
+                                <TextField fx:id="LVTxt" editable="false" layoutX="104.0" layoutY="100.0"
+                                           AnchorPane.topAnchor="101.0"/>
+                                <TextField fx:id="PCTxt" editable="false" layoutX="104.0" layoutY="126.0"
+                                           AnchorPane.topAnchor="130.0"/>
+                                <Label layoutX="36.0" layoutY="19.0" text="Is running"/>
+                                <Label layoutX="74.0" layoutY="47.0" text="TOS"/>
+                                <Label layoutX="78.0" layoutY="76.0" text="SP"/>
+                                <Label layoutX="78.0" layoutY="105.0" text="LV"/>
+                                <Label layoutX="78.0" layoutY="134.0" text="PC"/>
                             </children>
                         </AnchorPane>
                     </children>
                 </AnchorPane>
-                <AnchorPane layoutX="8.0" layoutY="518.0" prefHeight="285.0" prefWidth="314.0" style="-fx-border-insets: 8 0 0 0; -fx-background-color: #FFFFFF; -fx-border-color: black;" AnchorPane.bottomAnchor="6.0" AnchorPane.leftAnchor="8.0" AnchorPane.topAnchor="518.0">
+                <AnchorPane layoutX="8.0" layoutY="518.0" prefHeight="285.0" prefWidth="314.0"
+                            style="-fx-border-insets: 8 0 0 0; -fx-background-color: #FFFFFF; -fx-border-color: black;"
+                            AnchorPane.bottomAnchor="6.0" AnchorPane.leftAnchor="8.0" AnchorPane.topAnchor="518.0">
                     <children>
-                        <Label alignment="TOP_LEFT" layoutX="14.0" style="-fx-padding: 0 5; -fx-background-color: inherit;" text="IJVM Control Panel" />
-                        <AnchorPane prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="1.0" AnchorPane.leftAnchor="1.0" AnchorPane.rightAnchor="1.0" AnchorPane.topAnchor="10.0">
+                        <Label alignment="TOP_LEFT" layoutX="14.0"
+                               style="-fx-padding: 0 5; -fx-background-color: inherit;" text="IJVM Control Panel"/>
+                        <AnchorPane prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="1.0"
+                                    AnchorPane.leftAnchor="1.0" AnchorPane.rightAnchor="1.0"
+                                    AnchorPane.topAnchor="10.0">
                             <children>
-                                <Button fx:id="translateBtn" layoutY="2.0" mnemonicParsing="false" text="Translate &amp; Load" AnchorPane.leftAnchor="6.0" AnchorPane.topAnchor="6.0" />
-                                <Button fx:id="stopBtn" layoutX="213.0" layoutY="6.0" mnemonicParsing="false" text="Stop" />
-                                <Button fx:id="startBtn" layoutX="154.0" layoutY="6.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="55.0" text="Start" />
-                                <Button fx:id="resetBtn" layoutX="155.0" layoutY="40.0" mnemonicParsing="false" text="Reset" />
-                                <Button fx:id="stepBtn" layoutX="213.0" layoutY="40.0" mnemonicParsing="false" text="Step" />
-                                <Slider fx:id="sleepSlider" layoutX="14.0" layoutY="79.0" max="5000.0" prefHeight="14.0" prefWidth="217.0" />
-                                <TextField fx:id="sleepTxt" layoutX="244.0" layoutY="74.0" prefHeight="25.0" prefWidth="53.0" />
-                                <Button fx:id="slowRunBtn" layoutX="14.0" layoutY="99.0" mnemonicParsing="false" text="Slow Run" />
-                                <Button fx:id="stopSlowRunBtn" layoutX="98.0" layoutY="99.0" mnemonicParsing="false" text="Stop Slow Run" />
+                                <Button fx:id="translateBtn" layoutY="2.0" mnemonicParsing="false"
+                                        text="Translate &amp; Load" AnchorPane.leftAnchor="6.0"
+                                        AnchorPane.topAnchor="6.0"/>
+                                <Button fx:id="stopBtn" layoutX="213.0" layoutY="6.0" mnemonicParsing="false"
+                                        text="Stop"/>
+                                <Button fx:id="startBtn" layoutX="154.0" layoutY="6.0" mnemonicParsing="false"
+                                        prefHeight="26.0" prefWidth="55.0" text="Start"/>
+                                <Button fx:id="resetBtn" layoutX="155.0" layoutY="40.0" mnemonicParsing="false"
+                                        text="Reset"/>
+                                <Button fx:id="stepBtn" layoutX="213.0" layoutY="40.0" mnemonicParsing="false"
+                                        text="Step"/>
+                                <Slider fx:id="sleepSlider" layoutX="14.0" layoutY="79.0" max="5000.0" prefHeight="14.0"
+                                        prefWidth="217.0"/>
+                                <TextField fx:id="sleepTxt" layoutX="244.0" layoutY="74.0" prefHeight="25.0"
+                                           prefWidth="53.0"/>
+                                <Button fx:id="slowRunBtn" layoutX="14.0" layoutY="99.0" mnemonicParsing="false"
+                                        text="Slow Run"/>
+                                <Button fx:id="stopSlowRunBtn" layoutX="98.0" layoutY="99.0" mnemonicParsing="false"
+                                        text="Stop Slow Run"/>
                             </children>
                         </AnchorPane>
                     </children>
                 </AnchorPane>
-                <AnchorPane layoutX="329.0" prefHeight="803.0" prefWidth="291.0" style="-fx-border-insets: 8 0 0 0; -fx-background-color: #FFFFFF; -fx-border-color: black;" AnchorPane.bottomAnchor="6.0" AnchorPane.leftAnchor="329.0" AnchorPane.topAnchor="0.0">
+                <AnchorPane layoutX="329.0" prefHeight="803.0" prefWidth="291.0"
+                            style="-fx-border-insets: 8 0 0 0; -fx-background-color: #FFFFFF; -fx-border-color: black;"
+                            AnchorPane.bottomAnchor="6.0" AnchorPane.leftAnchor="329.0" AnchorPane.topAnchor="0.0">
                     <children>
-                        <Label alignment="TOP_LEFT" layoutX="14.0" style="-fx-padding: 0 5; -fx-background-color: inherit;" text="Stack" />
-                        <AnchorPane prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="1.0" AnchorPane.leftAnchor="1.0" AnchorPane.rightAnchor="1.0" AnchorPane.topAnchor="10.0">
+                        <Label alignment="TOP_LEFT" layoutX="14.0"
+                               style="-fx-padding: 0 5; -fx-background-color: inherit;" text="Stack"/>
+                        <AnchorPane prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="1.0"
+                                    AnchorPane.leftAnchor="1.0" AnchorPane.rightAnchor="1.0"
+                                    AnchorPane.topAnchor="10.0">
                             <children>
-                                <Canvas fx:id="stackCanvas" height="782.0" layoutX="14.0" layoutY="14.0" width="287.0" AnchorPane.bottomAnchor="-1.0" AnchorPane.leftAnchor="1.0" AnchorPane.rightAnchor="1.0" AnchorPane.topAnchor="1.0" />
+                                <Canvas fx:id="stackCanvas" height="782.0" layoutX="14.0" layoutY="14.0" width="287.0"
+                                        AnchorPane.bottomAnchor="-1.0" AnchorPane.leftAnchor="1.0"
+                                        AnchorPane.rightAnchor="1.0" AnchorPane.topAnchor="1.0"/>
                             </children>
                         </AnchorPane>
                     </children>
                 </AnchorPane>
-                <AnchorPane layoutX="631.0" layoutY="221.0" prefHeight="303.0" prefWidth="360.0" style="-fx-border-insets: 8 0 0 0; -fx-background-color: #FFFFFF; -fx-border-color: black;" AnchorPane.topAnchor="221.0">
+                <AnchorPane layoutX="631.0" layoutY="221.0" prefHeight="303.0" prefWidth="360.0"
+                            style="-fx-border-insets: 8 0 0 0; -fx-background-color: #FFFFFF; -fx-border-color: black;"
+                            AnchorPane.topAnchor="221.0">
                     <children>
-                        <Label alignment="TOP_LEFT" layoutX="14.0" style="-fx-padding: 0 5; -fx-background-color: inherit;" text="Method Area" />
-                        <AnchorPane prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="1.0" AnchorPane.leftAnchor="1.0" AnchorPane.rightAnchor="1.0" AnchorPane.topAnchor="10.0">
+                        <Label alignment="TOP_LEFT" layoutX="14.0"
+                               style="-fx-padding: 0 5; -fx-background-color: inherit;" text="Method Area"/>
+                        <AnchorPane prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="1.0"
+                                    AnchorPane.leftAnchor="1.0" AnchorPane.rightAnchor="1.0"
+                                    AnchorPane.topAnchor="10.0">
                             <children>
-                                <TextArea fx:id="methodAreaTxt" layoutY="31.0" prefHeight="139.0" prefWidth="174.0" AnchorPane.bottomAnchor="6.0" AnchorPane.leftAnchor="6.0" AnchorPane.rightAnchor="6.0" AnchorPane.topAnchor="31.0" />
-                                <RadioButton fx:id="methodBinRadio" layoutX="14.0" layoutY="6.0" mnemonicParsing="false" text="Bin" />
-                                <RadioButton fx:id="methodHexRadio" layoutX="59.0" layoutY="6.0" mnemonicParsing="false" text="Hex" />
+                                <TextArea fx:id="methodAreaTxt" layoutY="31.0" prefHeight="139.0" prefWidth="174.0"
+                                          AnchorPane.bottomAnchor="6.0" AnchorPane.leftAnchor="6.0"
+                                          AnchorPane.rightAnchor="6.0" AnchorPane.topAnchor="31.0"/>
+                                <RadioButton fx:id="methodBinRadio" layoutX="14.0" layoutY="6.0" mnemonicParsing="false"
+                                             text="Bin"/>
+                                <RadioButton fx:id="methodHexRadio" layoutX="59.0" layoutY="6.0" mnemonicParsing="false"
+                                             text="Hex"/>
                             </children>
                         </AnchorPane>
                     </children>
                 </AnchorPane>
-                <AnchorPane layoutX="631.0" layoutY="524.0" prefHeight="157.0" prefWidth="360.0" style="-fx-border-insets: 8 0 0 0; -fx-background-color: #FFFFFF; -fx-border-color: black;" AnchorPane.bottomAnchor="6.0" AnchorPane.topAnchor="524.0">
+                <AnchorPane layoutX="631.0" layoutY="524.0" prefHeight="157.0" prefWidth="360.0"
+                            style="-fx-border-insets: 8 0 0 0; -fx-background-color: #FFFFFF; -fx-border-color: black;"
+                            AnchorPane.bottomAnchor="6.0" AnchorPane.topAnchor="524.0">
                     <children>
-                        <Label alignment="TOP_LEFT" layoutX="14.0" style="-fx-padding: 0 5; -fx-background-color: inherit;" text="Constant Pool" />
-                        <AnchorPane prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="1.0" AnchorPane.leftAnchor="1.0" AnchorPane.rightAnchor="1.0" AnchorPane.topAnchor="10.0">
+                        <Label alignment="TOP_LEFT" layoutX="14.0"
+                               style="-fx-padding: 0 5; -fx-background-color: inherit;" text="Constant Pool"/>
+                        <AnchorPane prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="1.0"
+                                    AnchorPane.leftAnchor="1.0" AnchorPane.rightAnchor="1.0"
+                                    AnchorPane.topAnchor="10.0">
                             <children>
-                                <TextArea fx:id="constantAreaTxt" layoutY="9.0" prefHeight="120.0" prefWidth="345.0" AnchorPane.bottomAnchor="6.0" AnchorPane.leftAnchor="6.0" AnchorPane.rightAnchor="6.0" AnchorPane.topAnchor="6.0" />
+                                <TextArea fx:id="constantAreaTxt" layoutY="9.0" prefHeight="120.0" prefWidth="345.0"
+                                          AnchorPane.bottomAnchor="6.0" AnchorPane.leftAnchor="6.0"
+                                          AnchorPane.rightAnchor="6.0" AnchorPane.topAnchor="6.0"/>
                             </children>
                         </AnchorPane>
                     </children>
                 </AnchorPane>
-                <AnchorPane layoutX="999.0" prefHeight="221.0" prefWidth="360.0" style="-fx-border-insets: 8 0 0 0; -fx-background-color: #FFFFFF; -fx-border-color: black;">
+                <AnchorPane layoutX="999.0" prefHeight="221.0" prefWidth="360.0"
+                            style="-fx-border-insets: 8 0 0 0; -fx-background-color: #FFFFFF; -fx-border-color: black;">
                     <children>
-                        <Label alignment="TOP_LEFT" layoutX="14.0" style="-fx-padding: 0 5; -fx-background-color: inherit;" text="Standard Output" />
-                        <AnchorPane prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="1.0" AnchorPane.leftAnchor="1.0" AnchorPane.rightAnchor="1.0" AnchorPane.topAnchor="10.0">
+                        <Label alignment="TOP_LEFT" layoutX="14.0"
+                               style="-fx-padding: 0 5; -fx-background-color: inherit;" text="Standard Output"/>
+                        <AnchorPane prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="1.0"
+                                    AnchorPane.leftAnchor="1.0" AnchorPane.rightAnchor="1.0"
+                                    AnchorPane.topAnchor="10.0">
                             <children>
-                                <TextArea fx:id="stdoutTxt" layoutX="14.0" layoutY="14.0" prefHeight="147.0" prefWidth="149.0" AnchorPane.bottomAnchor="6.0" AnchorPane.leftAnchor="6.0" AnchorPane.rightAnchor="6.0" AnchorPane.topAnchor="6.0" />
+                                <TextArea fx:id="stdoutTxt" layoutX="14.0" layoutY="14.0" prefHeight="147.0"
+                                          prefWidth="149.0" AnchorPane.bottomAnchor="6.0" AnchorPane.leftAnchor="6.0"
+                                          AnchorPane.rightAnchor="6.0" AnchorPane.topAnchor="6.0"/>
                             </children>
                         </AnchorPane>
                     </children>
                 </AnchorPane>
-                <AnchorPane layoutX="999.0" layoutY="221.0" prefHeight="61.0" prefWidth="360.0" style="-fx-border-insets: 8 0 0 0; -fx-background-color: #FFFFFF; -fx-border-color: black;" AnchorPane.topAnchor="221.0">
+                <AnchorPane layoutX="999.0" layoutY="221.0" prefHeight="61.0" prefWidth="360.0"
+                            style="-fx-border-insets: 8 0 0 0; -fx-background-color: #FFFFFF; -fx-border-color: black;"
+                            AnchorPane.topAnchor="221.0">
                     <children>
-                        <Label alignment="TOP_LEFT" layoutX="14.0" style="-fx-padding: 0 5; -fx-background-color: inherit;" text="Standard Input" />
-                        <AnchorPane prefHeight="200.0" prefWidth="356.0" AnchorPane.bottomAnchor="1.0" AnchorPane.leftAnchor="2.0" AnchorPane.rightAnchor="1.0" AnchorPane.topAnchor="10.0">
+                        <Label alignment="TOP_LEFT" layoutX="14.0"
+                               style="-fx-padding: 0 5; -fx-background-color: inherit;" text="Standard Input"/>
+                        <AnchorPane prefHeight="200.0" prefWidth="356.0" AnchorPane.bottomAnchor="1.0"
+                                    AnchorPane.leftAnchor="2.0" AnchorPane.rightAnchor="1.0"
+                                    AnchorPane.topAnchor="10.0">
                             <children>
-                                <TextField fx:id="stdinTxt" layoutX="3.0" layoutY="2.0" prefHeight="25.0" prefWidth="270.0" />
-                                <Button fx:id="setStdinBtn" layoutX="309.0" layoutY="2.0" mnemonicParsing="false" text="Set" />
+                                <TextField fx:id="stdinTxt" layoutX="3.0" layoutY="2.0" prefHeight="25.0"
+                                           prefWidth="270.0"/>
+                                <Button fx:id="setStdinBtn" layoutX="309.0" layoutY="2.0" mnemonicParsing="false"
+                                        text="Set"/>
                             </children>
                         </AnchorPane>
                     </children>
                 </AnchorPane>
-            <Button fx:id="showMemoryBtn" layoutX="999.0" layoutY="291.0" mnemonicParsing="false" text="Button" />
+                <Button fx:id="showMemoryBtn" layoutX="999.0" layoutY="291.0" mnemonicParsing="false" text="Button"/>
 
             </children>
         </AnchorPane>

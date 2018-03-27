@@ -150,12 +150,12 @@ public class DataPath {
         return MBR;
     }
 
-    public void setMBR(int _value) {
-        MBR = new Binary8(_value);
-    }
-
     public void setMBR(Binary8 _value) {
         MBR = _value;
+    }
+
+    public void setMBR(int _value) {
+        MBR = new Binary8(_value);
     }
 
     public Binary32 getPC() {
@@ -170,12 +170,12 @@ public class DataPath {
         return MDR;
     }
 
-    public void setMDR(Binary32 _value) {
-        MDR = _value;
-    }
-
     public void setMDR(int _value) {
         MDR = new Binary32(_value);
+    }
+
+    public void setMDR(Binary32 _value) {
+        MDR = _value;
     }
 
     public Binary32 getMAR() {

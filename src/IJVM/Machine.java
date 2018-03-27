@@ -12,9 +12,10 @@ import MIC1.Components.controlStore;
 import Numbers.Binary32;
 import Numbers.Binary8;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
-import java.util.Scanner;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -31,11 +32,13 @@ public class Machine {
         mic1 = new MIC1();
         ListDL micInstr = new ListDL();
         //leggo dal file il microprogramm
-        try {
-            File theFile = new File("./IJVM/microprogram.mal");
-            Scanner input = new Scanner(theFile);
-            while (input.hasNext())
-                micInstr.insertTail(input.nextLine());
+        File theFile = new File("./IJVM/microprogram.mal");
+        try (BufferedReader br = new BufferedReader(new FileReader(theFile))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                // process the line.
+                micInstr.insertTail(line);
+            }
             String[] toTranslate = new String[micInstr.getSize()];
             micInstr.rewind();
             for (int i = 0; i < toTranslate.length; i++)
