@@ -188,7 +188,7 @@ public class Controller
 				memoryController = loader.getController();
 				Stage stage = new Stage();
 				stage.setTitle("Memory View");
-				stage.setScene(new Scene(root, 450, 450));
+				stage.setScene(new Scene(root,580,722));
 				stage.show();
 			}
 			catch (IOException e) {
