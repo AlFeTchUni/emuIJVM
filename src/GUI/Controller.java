@@ -162,19 +162,20 @@ public class Controller {
 
         });
 
+		Parent root;
+		Stage stage = new Stage();
+		try {
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("../memory.fxml"));
+			root = loader.load();
+			memoryController = loader.getController();
+			stage.setTitle("Memory View");
+			stage.setScene(new Scene(root));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
         showMemoryBtn.setOnAction(event -> {
-            Parent root;
-            try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("../memory.fxml"));
-                root = loader.load();
-                memoryController = loader.getController();
-                Stage stage = new Stage();
-                stage.setTitle("Memory View");
-                stage.setScene(new Scene(root, 580, 722));
-                stage.show();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+			stage.show();
         });
 
         Emulator myEm = new Emulator(this);
