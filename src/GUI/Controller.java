@@ -39,10 +39,12 @@ public class Controller {
     public Button stopSlowRunBtn;
     @FXML
     public Button showMemoryBtn;
+    @FXML
+    public Menu recent_program; //TODO
     private String KEYWORD_PATTERN = "\\b(" + String.join("|", KEYWORDS) + ")\\b";
-    private String COMMENT_PATTERN = "//[^\n]*" + "|" + "/\\*(.|\\R)*?\\*/";
-    private String LABEL_PATTERN = "(.)*:";
-    private String DECLARATION_PATTERN = "\\.(.*)";
+    private String COMMENT_PATTERN = "[/]{2}.*";
+    private String LABEL_PATTERN = "(?m)^((?![/.]).)*:";
+    private String DECLARATION_PATTERN = "(?m)^[^\\S\\n]*?[.].+?((?=[/:])|$)";
     private Pattern PATTERN = Pattern.compile(
             "(?<KEYWORD>" + KEYWORD_PATTERN + ")"
                     + "|(?<COMMENT>" + COMMENT_PATTERN + ")"
@@ -133,11 +135,15 @@ public class Controller {
     @FXML
     public void initialize() {
         programTxt.setParagraphGraphicFactory(LineNumberFactory.get(programTxt));
-
+        translateBtn.setDisable(true);
         programTxt.richChanges()
                 .filter(ch -> !ch.getInserted().equals(ch.getRemoved())) // XXX
                 .subscribe(change -> {
                     programTxt.setStyleSpans(0, computeHighlighting(programTxt.getText()));
+                    if (programTxt.getText().isEmpty())
+                        translateBtn.setDisable(true);
+                    else
+                        translateBtn.setDisable(false);
                 });
         programTxt.setId("programArea");
 
@@ -404,5 +410,9 @@ public class Controller {
                         + "|(?<LABEL>" + LABEL_PATTERN + ")"
                         + "|(?<DECLARATION>" + DECLARATION_PATTERN + ")"
         );
+    }
+
+    public void getRecentProgram(ActionEvent actionEvent) {
+        //TODO
     }
 }

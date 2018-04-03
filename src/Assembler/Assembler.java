@@ -79,14 +79,17 @@ public class Assembler {
         //secondo le specifiche Tanmbaumniane
         constantsTable.insertTail(new Constant("objref", 0));
         //pulisco tutte le righe di istruzioni dagli spazi in eccesso
+        int first_nempty_line = -1;
         for (int i = 0; i < _toTranslate.length; i++) {
             _toTranslate[i] = _toTranslate[i].replaceAll("\\s+", " ");
+            if (first_nempty_line == -1 && !_toTranslate[i].isEmpty())
+                first_nempty_line = i;
         }
         //cerco le costanti
-        if (_toTranslate[0].contains(".constant")) {
-            if (_toTranslate[0].replace(" ", "").equals(".constant")) {
-                _toTranslate[0] = null;
-                int j = 1;
+        if (_toTranslate[first_nempty_line].contains(".constant")) {
+            if (_toTranslate[first_nempty_line].replace(" ", "").equals(".constant")) {
+                _toTranslate[first_nempty_line] = null;
+                int j = first_nempty_line+1;
                 while (!_toTranslate[j].contains(".end-constant")) {
                     String[] constant = _toTranslate[j].split(" ");
                     if (constant.length != 2)
@@ -128,7 +131,7 @@ public class Assembler {
         boolean mainF = false;
         int mainInit = 0;
         for (int i = 0; i < _toTranslate.length; i++) {
-            if (_toTranslate[i] != null && _toTranslate[i].equals(".main")) {
+            if (_toTranslate[i] != null && _toTranslate[i].trim().equals(".main")) {
                 _toTranslate[i] = ".method main()";
                 if (mainF)
                     throw new TranslationError("main method already defined \non line " + (i + 1));
@@ -144,8 +147,8 @@ public class Assembler {
                     if (i >= _toTranslate.length)
                         throw new TranslationError(".end-main expected\n");
                     if (_toTranslate[i].contains("."))
-                        if (!_toTranslate[i].equals(".var") && !_toTranslate[i].equals(".end-main") &&
-                                !_toTranslate[i].equals(".end-var"))
+                        if (!_toTranslate[i].trim().equals(".var") && !_toTranslate[i].trim().equals(".end-main") &&
+                                !_toTranslate[i].trim().equals(".end-var"))
                             throw new TranslationError("Unexpected: " + _toTranslate[i] + " in method main");
                     if (index >= main.length) {
                         String[] mainN = new String[main.length + 1];
@@ -195,7 +198,7 @@ public class Assembler {
                     }
                     nowMethod[index] = _toTranslate[i];
                     _toTranslate[i] = null;
-                } else if (_toTranslate[i].isEmpty())
+                } else if (_toTranslate[i].replaceAll("\\s+", "").trim().isEmpty())
                     continue;
                 else
                     throw new TranslationError("Unknown instrunction:\n" + _toTranslate[i] + "\non line: " + i);
@@ -270,7 +273,16 @@ public class Assembler {
 	/*
 	  DECODIFICA VARIABILI LOCALI, SE ESISTENTI
 	*/
-        String direttivaVar = _instrunctions[1];
+	    int var_line = 1;
+        String direttivaVar = _instrunctions[var_line];
+        if (direttivaVar.trim().isEmpty()) {
+            for (var_line = 2; var_line < _instrunctions.length; var_line++) {
+                if (!_instrunctions[var_line].trim().isEmpty()) {
+                    direttivaVar = _instrunctions[var_line];
+                    break;
+                }
+            }
+        }
         int endVarIndex = 1;
         ListDL localVars = new ListDL();
         if (direttivaVar.contains(".var")) {
@@ -279,7 +291,7 @@ public class Assembler {
                 throw new TranslationError("Unknown instrution:\n" + direttiva +
                         "\nmethod: " + nomeMetodo + "\non line: " + (methodInit + 1));
             //esamino tutte le variabili finchè non trovo .end-var
-            int i = 2;
+            int i = var_line+1;
             try {
                 while (!_instrunctions[i].contains(".end-var")) {
                     //elimino spazi iniziali e spazi finali
@@ -303,7 +315,8 @@ public class Assembler {
                             throw new TranslationError("Variable already defined:\n" +
                                     _instrunctions[i] + " \nmethod: " + nomeMetodo +
                                     "\non line " + (methodInit + i));
-                    localVars.insertTail(_instrunctions[i]);
+                    if (!_instrunctions[i].isEmpty())
+                        localVars.insertTail(_instrunctions[i]);
                     endVarIndex = i++;
                 }
             } catch (IndexOutOfBoundsException e) {

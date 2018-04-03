@@ -186,6 +186,17 @@ public class Emulator {
             if (selectedFile != null) {
                 try {
                     theGUI.setProgram(new String(Files.readAllBytes(selectedFile.toPath())));
+                    reset = true;
+                    theMachine.reset();
+                    complete();
+                    theGUI.setMethodArea("");
+                    theGUI.setConstantPool("");
+                    theGUI.setOutput("");
+                    theGUI.setStdout("");
+                    theGUI.setStep(false);
+                    theGUI.setStop(false);
+                    theGUI.setStart(false);
+                    theGUI.setReset(false);
                 } catch (IOException e) {
                     Alert alert = new Alert(Alert.AlertType.ERROR);
                     alert.setTitle("System Error");
@@ -197,13 +208,15 @@ public class Emulator {
             }
 
         } else if (name.equals("New Program")) {
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-            alert.setTitle("Warning");
-            alert.setHeaderText("Warning");
-            alert.setContentText("This action will erase your program.\n Do you want to proceed?");
-
-            Optional<ButtonType> result = alert.showAndWait();
-            if (result.get() == ButtonType.OK) {
+            Optional<ButtonType> result = Optional.of(ButtonType.NO);
+            if (!theGUI.getProgramString().isEmpty()) {
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert.setTitle("Warning");
+                alert.setHeaderText("Warning");
+                alert.setContentText("This action will erase your program.\nDo you want to proceed?");
+                result = alert.showAndWait();
+            }
+            if (result.get() == ButtonType.OK || theGUI.getProgramString().isEmpty()) {
                 reset = true;
                 theMachine.reset();
                 complete();
