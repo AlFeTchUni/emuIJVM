@@ -18,6 +18,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.RadioButton;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.FileChooser;
 
 import javax.swing.*;
@@ -107,20 +108,9 @@ public class Emulator {
         }
 
     };
-    EventHandler<javafx.event.ActionEvent> stdinHandler = ev -> {
-        int stdinValue;
-        String stdin = theGUI.getStdinString();
-        try {
-            if (stdin.startsWith("0x")) {
-                String hex = stdin.split("0x")[1];
-                BigInteger bi = new BigInteger(hex, 16);
-                stdinValue = bi.intValue();
-            } else {
-                stdinValue = Integer.parseInt(stdin);
-            }
-            theMachine.setStdin(stdinValue);
-        } catch (NumberFormatException e) {
-            throw new TranslationError("STDIN is NaN");
+    EventHandler<KeyEvent> stdinHandler = event -> {
+        if (event.getText().length() > 0) {
+            theMachine.setStdin((int) event.getText().charAt(0));
         }
     };
     EventHandler<javafx.event.ActionEvent> stepHandler = ev -> {

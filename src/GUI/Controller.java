@@ -12,6 +12,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import org.fxmisc.richtext.LineNumberFactory;
 import org.fxmisc.richtext.model.StyleSpans;
@@ -66,7 +67,7 @@ public class Controller {
     @FXML
     private Button resetBtn;
     @FXML
-    private Button setStdinBtn;
+    private TextArea stdinTxt;
     @FXML
     private TextArea assemblerOutputTxt;
     @FXML
@@ -85,8 +86,6 @@ public class Controller {
     private TextField LVTxt;
     @FXML
     private TextField PCTxt;
-    @FXML
-    private TextField stdinTxt;
     @FXML
     private RadioButton methodBinRadio;
     @FXML
@@ -222,11 +221,6 @@ public class Controller {
     public void setHexBinaryHandler(EventHandler<ActionEvent> _toSet) {
         methodHexRadio.setOnAction(_toSet);
         methodBinRadio.setOnAction(_toSet);
-    }
-
-
-    public void setSetStdinBtn(EventHandler<ActionEvent> _toSet) {
-        setStdinBtn.setOnAction(_toSet);
     }
 
     public void setMenuHandler(EventHandler<ActionEvent> _toSet) {
@@ -414,5 +408,9 @@ public class Controller {
 
     public void getRecentProgram(ActionEvent actionEvent) {
         //TODO
+    }
+
+    public void setSetStdinBtn(EventHandler<KeyEvent> stdinHandler) {
+        stdinTxt.setOnKeyPressed(stdinHandler);
     }
 }
