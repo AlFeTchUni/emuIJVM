@@ -266,6 +266,13 @@ public class Controller {
         stdinTxt.setText(toSet);
     }
 
+    public void clearStdin() {
+        Platform.runLater(()->
+        {
+            stdinTxt.clear();
+        });
+    }
+
     public void appendStdout(String toSet) {
         Platform.runLater(() ->
         {

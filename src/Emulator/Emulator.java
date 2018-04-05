@@ -112,6 +112,7 @@ public class Emulator {
         if (event.getText().length() > 0) {
             theMachine.setStdin((int) event.getText().charAt(0));
         }
+        theGUI.clearStdin();
     };
     EventHandler<javafx.event.ActionEvent> stepHandler = ev -> {
         theMachine.step();

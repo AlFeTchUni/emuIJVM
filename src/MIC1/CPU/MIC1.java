@@ -130,6 +130,7 @@ public class MIC1 implements Runnable {
                             new Binary32(dataPath.getMDR().getValue())));
                     if (new Binary32(dataPath.getMAR().getValue()).getDecimal() == -3) {
                         toAdvise.getTheGUI().appendStdout("" + (char) new Binary32(dataPath.getMDR().getValue()).getDecimal());
+                        toWrite.enqueue(new toWriteData(new Binary32(-3), new Binary32(0)));
                     }
                 }
                 //delayed rd operation

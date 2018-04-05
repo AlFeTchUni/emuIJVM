@@ -13,7 +13,7 @@ TOS=MDR; goto Main1
 
 (0xFC)in1:OPC=H=-1
 OPC=H+OPC
-OPC=H+OPC
+//OPC=H+OPC
 MAR=H+OPC;rd            // compute IN address ; read from input
 MAR=SP=SP+1         // increment SP; wait for read
 TOS=MDR;wr ; goto Main1     // Write 
