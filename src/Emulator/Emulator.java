@@ -124,17 +124,18 @@ public class Emulator {
         t = new Thread(() ->
         {
             while (true) {
-                if (theMachine.step()) {
+                if (theMachine.stepNoThread()) {
                     break;
                 }
-                theGUI.setStop(true);
                 step = true;
+                theGUI.setMemoryTest(theMachine.getMemory());
                 try {
                     Thread.sleep(Integer.parseInt(theGUI.getSleep()));
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
             }
+            theGUI.setStop(true);
         });
         t.start();
     };

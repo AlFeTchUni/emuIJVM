@@ -135,7 +135,12 @@ public class MIC1 implements Runnable {
                 }
                 //delayed rd operation
                 if (mir.getInstruction().charAt(30) == '1')
+                {
                     readed.enqueue(mem32.rd(dataPath.getMAR()));
+                    if (new Binary32(dataPath.getMAR().getValue()).getDecimal() == -3) {
+                        toWrite.enqueue(new toWriteData(new Binary32(-3), new Binary32(0)));
+                    }
+                }
 
                 //delayed fetch operation
                 if (mir.getInstruction().charAt(31) == '1')

@@ -201,6 +201,14 @@ public class Machine {
         return mic1.getStop() == getPC() - 1;
     }
 
+    public synchronized boolean stepNoThread() {
+        mic1.setStep(true);
+        mic1.execute();
+        /*runner = Executors.newFixedThreadPool(1);
+        runner.execute(mic1);*/
+        return mic1.getStop() == getPC() - 1;
+    }
+
     public void setStdin(int stdin) {
         mic1.getMemory().wr(new Binary32(-3), new Binary32(stdin));
     }
