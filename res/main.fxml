@@ -23,7 +23,7 @@
                     <items>
                         <MenuItem fx:id="newProgramMenu" mnemonicParsing="false" text="New Program" />
                         <MenuItem fx:id="openProgramMenu" mnemonicParsing="false" text="Open Program" />
-                  <Menu fx:id="recent_program" mnemonicParsing="false" onAction="#getRecentProgram" text="Open Recent" />
+                        <Menu fx:id="recentPrograms" mnemonicParsing="false" onAction="#getRecentProgram" text="Open Recent" />
                         <MenuItem fx:id="saveProgramMenu" mnemonicParsing="false" text="Save Program" />
                         <MenuItem fx:id="exitMenu" mnemonicParsing="false" text="Exit" />
                     </items>
@@ -32,6 +32,11 @@
                     <items>
                         <MenuItem fx:id="microProgramMenu" mnemonicParsing="false" text="MicroProgram" />
                         <MenuItem fx:id="opcodeListMenu" mnemonicParsing="false" text="Opcode List" />
+                    </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="Windows">
+                    <items>
+                        <MenuItem fx:id="showMemoryViewMenu" mnemonicParsing="false" onAction="#showMemoryView" text="Show Memory View" />
                     </items>
                 </Menu>
                 <Menu mnemonicParsing="false" text="?">
@@ -96,8 +101,8 @@
                                 <Button fx:id="startBtn" layoutX="154.0" layoutY="6.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="55.0" text="Start" />
                                 <Button fx:id="resetBtn" layoutX="155.0" layoutY="40.0" mnemonicParsing="false" text="Reset" />
                                 <Button fx:id="stepBtn" layoutX="213.0" layoutY="40.0" mnemonicParsing="false" text="Step" />
-                                <Slider fx:id="sleepSlider" layoutX="14.0" layoutY="79.0" max="5000.0" prefHeight="14.0" prefWidth="217.0" />
-                                <TextField fx:id="sleepTxt" layoutX="244.0" layoutY="74.0" prefHeight="25.0" prefWidth="53.0" />
+                                <Slider fx:id="sleepSlider" layoutX="14.0" layoutY="79.0" max="1000.0" prefHeight="14.0" prefWidth="217.0" value="10" />
+                                <TextField fx:id="sleepTxt" layoutX="244.0" layoutY="74.0" prefHeight="25.0" prefWidth="53.0" text="10" />
                                 <Button fx:id="slowRunBtn" layoutX="14.0" layoutY="99.0" mnemonicParsing="false" text="Slow Run" />
                                 <Button fx:id="stopSlowRunBtn" layoutX="98.0" layoutY="99.0" mnemonicParsing="false" text="Stop Slow Run" />
                             </children>
@@ -156,8 +161,6 @@
                         </AnchorPane>
                     </children>
                 </AnchorPane>
-                <Button fx:id="showMemoryBtn" layoutX="999.0" layoutY="399.0" mnemonicParsing="false" text="Button" />
-
             </children>
         </AnchorPane>
     </children>

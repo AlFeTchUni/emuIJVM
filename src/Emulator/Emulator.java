@@ -41,6 +41,7 @@ public class Emulator {
     //true se è stato premuto reset
     boolean reset;
     boolean step;
+    boolean slowRunning = false;
     Wait theWait = new Wait(null, false);
     Thread t;
     EventHandler<javafx.event.ActionEvent> compileHandler = ev -> {
@@ -81,6 +82,7 @@ public class Emulator {
     };
     EventHandler<javafx.event.ActionEvent> stopHandler = ev -> {
         stopped = true;
+		slowRunning = false;
         theMachine.halt();
         theGUI.setStop(false);
     };
@@ -88,6 +90,7 @@ public class Emulator {
         int coefficienteStress = theMachine.getSP() - theMachine.getLV();
         if (!step && coefficienteStress > 750)
             theWait.setVisible(true);
+        slowRunning = false;
         reset = true;
         theMachine.reset();
         theGUI.setStart(true);
@@ -121,9 +124,11 @@ public class Emulator {
         theGUI.setMemoryTest(theMachine.getMemory());
     };
     EventHandler<javafx.event.ActionEvent> slowRunHandler = ev -> {
+        slowRunning = true;
+        theGUI.setStep(false);
         t = new Thread(() ->
         {
-            while (true) {
+            while (slowRunning) {
                 if (theMachine.stepNoThread()) {
                     break;
                 }
@@ -136,11 +141,12 @@ public class Emulator {
                 }
             }
             theGUI.setStop(true);
+			theGUI.setStep(true);
         });
         t.start();
     };
     EventHandler<javafx.event.ActionEvent> stopSlowRunHandler = ev -> {
-        t.stop();
+        slowRunning = false;
     };
     //l'icona del programma
     private javax.swing.ImageIcon icon = new javax.swing.ImageIcon("OtherStuff/icon.png");

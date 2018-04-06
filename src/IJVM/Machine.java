@@ -223,6 +223,7 @@ public class Machine {
         mic1.setMBR(new Binary8(invokeB));
         //effettua una pulizia della memoria
         memory.deleteFrom(lastByte);
+        memory.wr(new Binary32(-3), new Binary32(0));
         mic1.reset(firstInstr, mainLastByte);
     }
 
