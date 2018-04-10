@@ -91,7 +91,7 @@ public class Assembler {
                 _toTranslate[first_nempty_line] = null;
                 int j = first_nempty_line+1;
                 while (!_toTranslate[j].contains(".end-constant")) {
-                    String[] constant = _toTranslate[j].split(" ");
+                    String[] constant = _toTranslate[j].trim().split(" ");
                     if (constant.length != 2)
                         throw new TranslationError("Malformed constant declaration: \n"
                                 + _toTranslate[j] + "\non line: " + (j + 1));
@@ -428,7 +428,7 @@ public class Assembler {
                                 }
                             } catch (NumberFormatException e) {
                                 throw new TranslationError(opcodeLine[j + (now.isLarge() ? 2 : 1)] +
-                                        " is NaN\nmethod: " + nomeMetodo + "+\non line: " + (methodInit + i));
+                                        " is NaN\nmethod: " + nomeMetodo + "\non line: " + (methodInit + i));
                             } catch (IndexOutOfBoundsException e) {
                                 throw new TranslationError("Invalid Hex number on line: " + (methodInit + i));
                             }
