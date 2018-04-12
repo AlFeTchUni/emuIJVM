@@ -135,7 +135,7 @@ public class Stack {
         error = true;
     }
 
-    public void paintComponent(GraphicsContext g) {
+    public void paintComponent(GraphicsContext g, boolean hex) {
         if (!error) {
             for (int i = 0; i < xArr.length; i++) {
                 g.setFill(Color.GRAY);
@@ -143,7 +143,11 @@ public class Stack {
                 double[] yArrDoubles = Arrays.stream(yArr[i]).asDoubleStream().toArray();
                 g.fillPolygon(xArrDoubles, yArrDoubles, 4);
                 g.setFill(Color.WHITE);
-                String toPrint = new Integer(values[i]).toString();
+                String toPrint;
+                if(hex)
+                    toPrint = Integer.toHexString(values[i]);
+                else
+                    toPrint = String.valueOf(values[i]);
                 g.fillText(toPrint, 140 - ((toPrint.length() * 7) / 2), yArr[i][0] - 5);
                 //stampo la freccia verso destra che indica LV
 

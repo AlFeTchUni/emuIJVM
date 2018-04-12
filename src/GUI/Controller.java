@@ -105,11 +105,18 @@ public class Controller
 	private MenuItem showMemoryViewMenu;
 	@FXML
 	private MenuItem aboutMenu;
+	@FXML
+	private RadioButton globalDecRadio;
+	@FXML
+	private RadioButton globalHexRadio;
+
 	private int registerBuffer = 0;
 	private Stack stack;
 	private MemoryController memoryController;
 	private Parent memoryRoot;
 	private Stage memoryStage;
+
+	private boolean hex = true;
 
 	private StyleSpans<Collection<String>> computeHighlighting(String text)
 	{
@@ -355,7 +362,12 @@ public class Controller
 	{
 		Platform.runLater(() ->
 		{
-			SPTxt.setText((new Integer(toSet)).toString());
+			String string;
+			if(hex)
+				string = Integer.toHexString(toSet);
+			else
+				string = String.valueOf(toSet);
+			SPTxt.setText(string);
 		});
 	}
 
@@ -363,7 +375,12 @@ public class Controller
 	{
 		Platform.runLater(() ->
 		{
-			LVTxt.setText((new Integer(toSet)).toString());
+			String string;
+			if(hex)
+				string = Integer.toHexString(toSet);
+			else
+				string = String.valueOf(toSet);
+			LVTxt.setText(string);
 		});
 	}
 
@@ -371,7 +388,12 @@ public class Controller
 	{
 		Platform.runLater(() ->
 		{
-			PCTxt.setText((new Integer(toSet)).toString());
+			String string;
+			if(hex)
+				string = Integer.toHexString(toSet);
+			else
+				string = String.valueOf(toSet);
+			PCTxt.setText(string);
 		});
 	}
 
@@ -387,7 +409,12 @@ public class Controller
 	{
 		Platform.runLater(() ->
 		{
-			TOSTxt.setText((new Integer(toSet)).toString());
+			String string;
+			if(hex)
+				string = Integer.toHexString(toSet);
+			else
+				string = String.valueOf(toSet);
+			TOSTxt.setText(string);
 		});
 	}
 
@@ -419,7 +446,7 @@ public class Controller
 		Platform.runLater(() ->
 		{
 			stack.error();
-			stack.paintComponent(stackCanvas.getGraphicsContext2D());
+			stack.paintComponent(stackCanvas.getGraphicsContext2D(), hex);
 		});
 
 	}
@@ -439,7 +466,7 @@ public class Controller
 		Platform.runLater(() ->
 		{
 			stackCanvas.getGraphicsContext2D().clearRect(0, 0, stackCanvas.getWidth(), stackCanvas.getHeight());
-			stack.paintComponent(stackCanvas.getGraphicsContext2D());
+			stack.paintComponent(stackCanvas.getGraphicsContext2D(), hex);
 		});
 
 	}
@@ -479,5 +506,28 @@ public class Controller
 		{
 			memoryStage.requestFocus();
 		}
+	}
+
+	public void onGlobalDecRadio(ActionEvent actionEvent)
+	{
+		globalHexRadio.setSelected(false);
+		hex = false;
+		refreshStack();
+
+		SPTxt.setText(String.valueOf(Integer.parseInt(SPTxt.getText().trim(),16)));
+		LVTxt.setText(String.valueOf(Integer.parseInt(LVTxt.getText().trim(),16)));
+		PCTxt.setText(String.valueOf(Integer.parseInt(PCTxt.getText().trim(),16)));
+		TOSTxt.setText(String.valueOf(Integer.parseInt(TOSTxt.getText().trim(),16)));
+	}
+
+	public void onGlobalHexRadio(ActionEvent actionEvent)
+	{
+		globalDecRadio.setSelected(false);
+		hex = true;
+		refreshStack();
+		SPTxt.setText(Integer.toHexString(Integer.parseInt(SPTxt.getText().trim())));
+		LVTxt.setText(Integer.toHexString(Integer.parseInt(LVTxt.getText().trim())));
+		PCTxt.setText(Integer.toHexString(Integer.parseInt(PCTxt.getText().trim())));
+		TOSTxt.setText(Integer.toHexString(Integer.parseInt(TOSTxt.getText().trim())));
 	}
 }

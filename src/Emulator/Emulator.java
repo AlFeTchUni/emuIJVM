@@ -211,6 +211,7 @@ public class Emulator {
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                 alert.setTitle("Warning");
                 alert.setHeaderText("Warning");
+                alert.setResizable(true);
                 alert.setContentText("This action will erase your program.\nDo you want to proceed?");
                 result = alert.showAndWait();
             }

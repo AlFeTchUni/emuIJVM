@@ -15,7 +15,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import org.fxmisc.flowless.VirtualizedScrollPane?>
 
-<VBox prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.Controller">
+<VBox prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.Controller">
     <children>
         <MenuBar VBox.vgrow="NEVER">
             <menus>
@@ -161,6 +161,8 @@
                         </AnchorPane>
                     </children>
                 </AnchorPane>
+            <RadioButton fx:id="globalDecRadio" layoutX="999.0" layoutY="384.0" mnemonicParsing="false" onAction="#onGlobalDecRadio" text="Dec" />
+            <RadioButton fx:id="globalHexRadio" layoutX="1052.0" layoutY="384.0" mnemonicParsing="false" onAction="#onGlobalHexRadio" selected="true" text="Hex" />
             </children>
         </AnchorPane>
     </children>
